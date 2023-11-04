@@ -12,7 +12,7 @@ const Quiz = new mongoose.Schema(
         type: [String],
         required: true,
       },
-      correctOption: {
+      correctAnswer: {
         type: String,
         enum: [
             'A',

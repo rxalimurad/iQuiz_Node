@@ -1,6 +1,6 @@
 [
   {
-    "question": "B is tight?",
+    "question": "B is tight1?",
     "options": [
       "Wrong",
       "Wrong",
@@ -11,7 +11,7 @@
     "correctAnswer": "C"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight2?",
     "options": [
       "Correct",
       "Wrong",
@@ -22,7 +22,7 @@
     "correctAnswer": "A"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight3?",
     "options": [
       "Wrong",
       "Wrong",
@@ -33,7 +33,7 @@
     "correctAnswer": "D"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight4?",
     "options": [
       "Wrong",
       "Wrong",
@@ -44,7 +44,7 @@
     "correctAnswer": "D"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight5?",
     "options": [
       "Wrong",
       "Wrong",
@@ -55,7 +55,7 @@
     "correctAnswer": "C"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight6?",
     "options": [
       "Correct",
       "Wrong",
@@ -66,7 +66,7 @@
     "correctAnswer": "A"
   },
   {
-    "question": "B is tight?",
+    "question": "B is tight7?",
     "options": [
       "Wrong",
       "Wrong",
@@ -76,5 +76,4 @@
     ],
     "correctAnswer": "E"
   }
-
 ]
