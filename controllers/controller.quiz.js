@@ -4,20 +4,21 @@ const Quiz = require('../models/model.quiz');
 
 exports.fetchQuiz = async (req, res, next) => {
     try {
-        let id = req.params.id;
-        const bootcamp = await Quiz.findById(id);
-        return {bootcamp};
+        const filter = { categoryId: req.params.id }; 
+        const quiz = await Quiz.find(filter);
 
-        res.status(200).json(fetchQuizWithId(id))
+        res.status(200).json({count: quiz.length, data: quiz})
     } catch (err) {
         res.status(404).json({ error: err })
     }
 }
 
 
-exports.uploadQuizData = async (req, res, next) => {
+exports.uploadBulkQuizData = async (req, res, next) => {
+  
     try {
         const questionSchema = Joi.object({
+            categoryId: Joi.string().required(),
             question: Joi.string().required(),
             options: Joi.array().items(Joi.string()).required(),
             correctAnswer: Joi.string().valid('A', 'B', 'C', 'D', 'E').required()
@@ -42,4 +43,38 @@ exports.uploadQuizData = async (req, res, next) => {
         return res.status(401).send("Bad format:" + e);
     }
 
+}
+
+exports.uploadQuizData = async (req, res, next) => {
+  
+    try {
+        const quiz = await Quiz.create(req.body);
+        res.status(201).json({
+          success: true,
+          data: quiz,
+        });
+
+    } catch (e) {
+        return res.status(401).send("Bad format:" + e);
+    }
+
+}
+
+exports.deleteQuiz = async (req, res, next) => {
+    try {
+        
+        const quiz = await Quiz.findByIdAndDelete(req.params.id);
+
+        if (quiz.deletedCount === 0) {
+            return res.status(401).json(req.params.id+" Bad request: ")
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Quiz deleted successfully',
+        });
+    } catch(err) {
+        console.error(err);
+        return res.status(500).json({ success: false, error: 'Server Error'+err });
+    }
 }

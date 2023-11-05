@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const connectDB = require('./config/db')
 
+// Set EJS as the view engine
+express.set('view engine', 'ejs');
+
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 

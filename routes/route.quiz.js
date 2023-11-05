@@ -5,8 +5,12 @@ const controller = require('../controllers/controller.quiz');
 
 router.route('/:id')
 .get(controller.fetchQuiz)
+.delete(controller.deleteQuiz)
 
-router.route('/upload')
+router.route('/bulkUpload')
+.post(controller.uploadBulkQuizData)
+
+router.route('/')
 .post(controller.uploadQuizData)
 
 module.exports = router;

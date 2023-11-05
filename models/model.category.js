@@ -2,21 +2,29 @@ const mongoose = require('mongoose');
 
 const Category = new mongoose.Schema(
     {
-      id: {
-        type: String,
-        required: [true, 'Please add a id'],
-        unique: true,
-      },
+
       name: {
         type: String,
+        unique: true,
+        trim: true,
         required: [true, 'Please add a name'],
       },
-      createdAt: {
+      timestamp: {
         type: Date,
         default: Date.now
       }
     }
     
   );
+  Category.set('toObject', { virtuals: true });
+  Category.set('toJSON', { virtuals: true });
+  
+  Category.virtual('quizzes', {
+    ref: 'Quiz',
+    localField: '_id',
+    foreignField: 'categoryId',
+    justOne: false,
+  });
+
 
   module.exports = mongoose.model('Category', Category);

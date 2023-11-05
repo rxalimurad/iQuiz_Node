@@ -3,14 +3,15 @@ const Category = require('../models/model.category');
 
 exports.fetchAllCategory = async (req, res, next) => {
    try {
-    let data = await Category.find()
+    let data = await Category.find().populate('quizzes');
     if (!data) {
         return res.status(404).json("Resource not found")
     }
     console.log(data)
-    res.status(200).json({data})
+    //  res.status(200).json({count: data.length, data: data})
+    res.render('index', { data });
    } catch(err) {
-    return res.status(404).json("Resource not found")
+    return res.status(404).json("Resource not found " + err)
    }
 }
 
@@ -29,15 +30,11 @@ exports.addCategory = async (req, res, next) => {
  
  exports.updateCategory = async (req, res, next) => {
     try {
-        const filter = { id: req.params.id }; 
         
-        const update = { 
-            $set: req.body 
-        };
-        const category = await Category.updateOne(filter, update, {
-            new: true, 
-            validators: true, 
-        });
+        const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true
+          });
           if (!category) {
             return res.status(401).json(req.params.id+" Bad request: "+ err)
         }
@@ -53,9 +50,8 @@ exports.addCategory = async (req, res, next) => {
 
  exports.deleteCategory = async (req, res, next) => {
     try {
-        const filter = { id: req.params.id }; 
         
-        const category = await Category.deleteOne(filter);
+        const category = await Category.findByIdAndDelete(req.params.id);
 
         if (category.deletedCount === 0) {
             return res.status(401).json(req.params.id+" Bad request: ")
