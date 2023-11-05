@@ -7,14 +7,13 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const connectDB = require('./config/db')
 
-// Set EJS as the view engine
-express.set('view engine', 'ejs');
 
 // Load env vars
 dotenv.config({ path: './config/config.env' });
 
 express.use(fileUpload());
 express.use(bodyParser.json());
+express.use(require('express').static('public'));
 
 express.use('/api/v1/quiz', quizRouter);
 express.use('/api/v1/category', categoryRouter);

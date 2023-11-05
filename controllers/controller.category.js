@@ -8,8 +8,7 @@ exports.fetchAllCategory = async (req, res, next) => {
         return res.status(404).json("Resource not found")
     }
     console.log(data)
-    //  res.status(200).json({count: data.length, data: data})
-    res.render('index', { data });
+     res.status(200).json({count: data.length, data: data})
    } catch(err) {
     return res.status(404).json("Resource not found " + err)
    }
