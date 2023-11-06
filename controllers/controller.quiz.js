@@ -5,7 +5,7 @@ const Quiz = require('../models/model.quiz');
 exports.fetchQuiz = async (req, res, next) => {
     try {
         const filter = { categoryId: req.params.id }; 
-        const quiz = await Quiz.find(filter);
+        const quiz = await Quiz.find(filter)
 
         res.status(200).json({count: quiz.length, data: quiz})
     } catch (err) {
@@ -24,6 +24,7 @@ exports.uploadBulkQuizData = async (req, res, next) => {
             correctAnswer: Joi.string().valid('A', 'B', 'C', 'D', 'E').required()
         });
         const schema = Joi.array().items(questionSchema);
+        
         const jsonData = JSON.parse(req.files.dataFile.data.toString('utf8'));
 
         const { error } = schema.validate(jsonData);

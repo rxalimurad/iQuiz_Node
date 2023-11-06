@@ -16,15 +16,21 @@ const Category = new mongoose.Schema(
     }
     
   );
-  Category.set('toObject', { virtuals: true });
-  Category.set('toJSON', { virtuals: true });
-  
+
+  Category.set('toJSON', {
+    virtuals: true
+  });
+  Category.set('toObject', {
+    virtuals: true
+  });
+
   Category.virtual('quizzes', {
     ref: 'Quiz',
     localField: '_id',
     foreignField: 'categoryId',
-    justOne: false,
+    justOne: false
   });
 
+  
 
   module.exports = mongoose.model('Category', Category);
