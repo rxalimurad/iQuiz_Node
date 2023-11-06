@@ -1,4 +1,4 @@
-const User = require('../models/mode.user');
+const User = require('../models/model.user');
 const jwt = require('jsonwebtoken');
 
 
@@ -11,7 +11,7 @@ exports.loginUser = async (req, res, next) => {
         let token = jwt.sign({ phone: user.phone }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRE,
         });
-        res.status(200).json({success: true, token: token, role: user.role, message: "Login successful"})
+        res.status(200).json({success: true, token: token, user: user, message: "Login successful"})
     } catch(err) {
         return res.status(404).json("Resource not found " + err)
     }
@@ -24,7 +24,7 @@ exports.getLoginUser = async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const user = await User.findOne({ phone: decoded.phone });
-        res.status(200).json({success: true, data: user})
+        res.status(200).json({success: true, user: user})
     } catch(err) {
 
         if(err.constructor.name === "JsonWebTokenError") {

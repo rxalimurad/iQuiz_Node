@@ -2,6 +2,7 @@ const express = require('express')()
 const quizRouter = require('./routes/route.quiz')
 const categoryRouter = require('./routes/route.category')
 const userRouter = require('./routes/route.user')
+const historyRouter = require('./routes/route.history')
 
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
@@ -19,6 +20,7 @@ express.use(require('express').static('public'));
 express.use('/api/v1/quiz', quizRouter);
 express.use('/api/v1/category', categoryRouter);
 express.use('/api/v1/user', userRouter);
+express.use('/api/v1/history', historyRouter);
 
 connectDB()
 const PORT = process.env.PORT || 6969;

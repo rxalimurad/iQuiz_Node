@@ -19,8 +19,23 @@ const User = new mongoose.Schema(
         default: Date.now
       }
     }
-    
+  
   );
+
+  User.set('toJSON', {
+    virtuals: true
+  });
+  User.set('toObject', {
+    virtuals: true
+  });
+
+  
+  User.virtual('histories', {
+    ref: 'History',
+    localField: '_id',
+    foreignField: 'user',
+    justOne: false
+  });
 
 
   module.exports = mongoose.model('User', User);

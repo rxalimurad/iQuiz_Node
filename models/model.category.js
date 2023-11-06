@@ -31,6 +31,14 @@ const Category = new mongoose.Schema(
     justOne: false
   });
 
+  Category.virtual('histories', {
+    ref: 'History',
+    localField: '_id',
+    foreignField: 'category',
+    justOne: false
+  });
+
+
   
 
   module.exports = mongoose.model('Category', Category);
