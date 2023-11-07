@@ -5,11 +5,10 @@ const { route } = require('./route.quiz');
 
 
 router.route('/:id')
-.post(controller.addHistory)
 .get(controller.fetchDetailHistory)
 
 router.route('/')
 .get(controller.fetchAllHistory)
-
+.post(controller.addHistory)
 
 module.exports = router;

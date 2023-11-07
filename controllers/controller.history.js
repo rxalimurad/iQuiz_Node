@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 exports.addHistory = async (req, res, next) => {
   try {
-    let categoryId = req.params.id;
+    let categoryId = req.body.categoryId;
     let token = req.headers.authorization.split(" ")[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ phone: decoded.phone });
