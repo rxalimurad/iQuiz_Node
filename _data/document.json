@@ -1,0 +1,472 @@
+{
+	"info": {
+		"_postman_id": "8d08f4ea-0c3d-4835-89b3-dc8a4cd1c374",
+		"name": "iQuiz",
+		"description": "API for getting/creating/deleting Quizzes and saving its results against a user.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24719131"
+	},
+	"item": [
+		{
+			"name": "Quizzes",
+			"item": [
+				{
+					"name": "Get All Quiz",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/quiz/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quiz",
+								""
+							]
+						},
+						"description": "Get all Quizzes.\n\n- No specific input is required.\n    \n- Quizzes are publically available.\n- Quizzes are not associated with any user."
+					},
+					"response": []
+				},
+				{
+					"name": "Add New Quiz",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"2026 Qestion papers\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/quiz/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quiz",
+								""
+							]
+						},
+						"description": "Add new Quiz\n\n- name must be provided in the body in JSON format.\n- **(Pending)** Need to add an admin user to add Quiz."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Quiz Name",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quizId\" : \"654a74299b5ea5908e1adaf2\",    \n    \"name\": \"2022 Murad course\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/quiz/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quiz",
+								""
+							]
+						},
+						"description": "update Quiz name\n\n- name must be provided in body in json format.\n- **(Pending)** Need to add admin user to update Quiz"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quiz",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/quiz/654a74349b5ea5908e1adaf6",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"quiz",
+								"654a74349b5ea5908e1adaf6"
+							]
+						},
+						"description": "delete Quiz\n\n- name must be provided in body in json format.\n- **(Pending)** Need to add admin user to delete Quiz."
+					},
+					"response": []
+				}
+			],
+			"description": "For adding/deleting/updating and fetching Quizzes."
+		},
+		{
+			"name": "Question",
+			"item": [
+				{
+					"name": "Get questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/question/654a74399b5ea5908e1adaf8",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question",
+								"654a74399b5ea5908e1adaf8"
+							]
+						},
+						"description": "Get all questions against a quiz id.\n\n- Input is category id in path params.\n- quiz id can be gotten from Get All Quzzies request."
+					},
+					"response": []
+				},
+				{
+					"name": "add new Question",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quizId\": \"654a74349b5ea5908e1adaf6\",\n    \"question\": \"question 2\",\n    \"options\": [\n      \"Correct\",\n      \"Wrong\",\n      \"Wrong\",\n      \"Wrong\",\n      \"Wrong\"\n    ],\n    \"correctAnswer\": \"A\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/question/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question",
+								""
+							]
+						},
+						"description": "Add a new question against a Quizthe .\n\n- Input is must be in mentioned format."
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Question in bulk",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "dataFile",
+									"type": "file",
+									"src": "/Users/murad/Documents/GitHub/iQuiz_Node/_data/A.json"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/question/bulkUpload",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question",
+								"bulkUpload"
+							]
+						},
+						"description": "Add new questions/quizzes against a category id through a file.\n\n- Input file must be in array of update question formate."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Question",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/question/654a77a8c252e2c3b1e20abb",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"question",
+								"654a77a8c252e2c3b1e20abb"
+							]
+						},
+						"description": "Delete quiz\n\n- Input must be question id\n    \n- question id can be get from Get quizzes request"
+					},
+					"response": []
+				}
+			],
+			"description": "This section is for adding/deleting questions in a quiz."
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ali M\",\n    \"phone\": \"+923244897384\",\n    \"imageName\": \"1.png\",\n    \"role\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						},
+						"description": "Login User will return JWT Token.  \nClient must save it for history action.  \n**(Pending)** Currently admin user is pending"
+					},
+					"response": []
+				},
+				{
+					"name": "Get LoggedIn User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "bearer {{Token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/api/v1/user/getUser",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"getUser"
+							]
+						},
+						"description": "End point for getting current user."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6Iis5MjMyNDQ4OTczODQiLCJpYXQiOjE2OTkyOTc0MjAsImV4cCI6MTcwMTg4OTQyMH0._0mFc02lhyQk7DAzg0aXFQQzDxHP_cPSym8ZTR092HA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ali Farzan\",\n    \"imageName\": \"2.png\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/user/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								""
+							]
+						},
+						"description": "Login User will return JWT Token.  \nClient must save it for history action.  \n**(Pending)** Currently admin user is pending"
+					},
+					"response": []
+				}
+			],
+			"description": "For saving the history, user must login as saving and retriving quiz history."
+		},
+		{
+			"name": "History",
+			"item": [
+				{
+					"name": "Get All History Against User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/history",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"history"
+							]
+						},
+						"description": "Return all quiz attemped completed by user with some details(score, quiz name, attempted date)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Detailed History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/v1/history/654a874ff1c811a97654ca97",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"history",
+								"654a874ff1c811a97654ca97"
+							]
+						},
+						"description": "Return detail of single quiz in details with correct and selected option."
+					},
+					"response": []
+				},
+				{
+					"name": "Save History",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6Iis5MjMyNDQ4OTczODQiLCJpYXQiOjE2OTkyOTc0MjAsImV4cCI6MTcwMTg4OTQyMH0._0mFc02lhyQk7DAzg0aXFQQzDxHP_cPSym8ZTR092HA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "b eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6Iis5MjMyNDQ4OTczODQiLCJpYXQiOjE2OTkyOTc0MjAsImV4cCI6MTcwMTg4OTQyMH0._0mFc02lhyQk7DAzg0aXFQQzDxHP_cPSym8ZTR092HA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quizID\" : \"654a74399b5ea5908e1adaf8\",\n    \"anwsers\" : [\n            \"A\",\n            \"B\",\n            \"C\",\n            \"D\",\n            \"F\"\n    ]\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/api/v1/history/",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"history",
+								""
+							]
+						},
+						"description": "Save a quiz attempt in history."
+					},
+					"response": []
+				}
+			],
+			"description": "Saving and fetching quiz results."
+		}
+	]
+}
