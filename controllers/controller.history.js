@@ -1,21 +1,21 @@
 const { func } = require("joi");
 const History = require("../models/model.history");
 const User = require("../models/model.user");
-const Category = require("../models/model.category");
+const Quiz = require("../models/model.quiz");
 const jwt = require("jsonwebtoken");
 
 exports.addHistory = async (req, res, next) => {
   try {
-    let categoryId = req.body.categoryId;
+    let categoryId = req.body.questionId;
     let token = req.headers.authorization.split(" ")[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ phone: decoded.phone });
-    const category = await Category.findById(categoryId).populate("quizzes");
+    const category = await Quiz.findById(categoryId).populate("questions");
     let anwsers = req.body.anwsers;
-    if (anwsers.length === category.quizzes.length) {
+    if (anwsers.length === category.questions.length) {
       let history = await History.create({
         user: user._id,
-        category: category._id,
+        category: question._id,
         anwsers: req.body.anwsers,
       });
       res.status(201).json({
@@ -23,7 +23,7 @@ exports.addHistory = async (req, res, next) => {
         data: history,
       });
     } else {
-      res.status(400).send("Input anwsers not match with quizzes");
+      res.status(400).send("Input anwsers not match with questions");
     }
   } catch (err) {
     if (err.constructor.name === "JsonWebTokenError") {
@@ -41,20 +41,20 @@ exports.fetchAllHistory = async (req, res, next) => {
     const user = await User.findOne({ phone: decoded.phone }).populate({
       path: "histories",
       populate: {
-        path: "category",
-        model: "Category",
+        path: "question",
+        model: "Question",
         populate: {
-          path: "quizzes",
-          model: "Quiz",
+          path: "question",
+          model: "Question",
         },
       },
     });
     let histories = user.histories;
     let selectedAnwers = histories.map((history) => history.anwsers);
     let anwsers = histories.map((history) =>
-      history.category.quizzes.map((quiz) => quiz.correctAnswer)
+      history.category.questions.map((quiz) => quiz.correctAnswer)
     );
-    let name = histories.map((history) => history.category.name);
+    let name = histories.map((history) => history.quiz.name);
     let timestamp = histories.map((history) => history.timestamp);
 
     let zippedArray = selectedAnwers.map((selectedAnswer, index) => {
@@ -90,21 +90,19 @@ exports.fetchDetailHistory = async (req, res, next) => {
   let history = await History.findOne({ _id: quizID })
     .populate("user")
     .populate({
-      path: "category",
+      path: "quiz",
       populate: {
-        path: "quizzes",
+        path: "questions",
       },
     });
 
-  // history.category.quizzes.map(quiz => {
-  console.log(history.category.quizzes);
-  // })
-  let zippedArray = history.category.quizzes.map((quiz, index) => {
+
+  let zippedArray = history.quiz.questions.map((question, index) => {
       return {
-          question: quiz.question,
-          isCorrect: history.category.quizzes[index].correctAnswer === history.anwsers[index],
-          correct: history.category.quizzes[index].options[getCorrectAnswer(history.category.quizzes[index].correctAnswer) - 1],
-          selected: history.category.quizzes[index].options[getCorrectAnswer(history.anwsers[index]) - 1],
+          question: question.question,
+          isCorrect: history.quiz.questions[index].correctAnswer === history.anwsers[index],
+          correct: history.quiz.questions[index].options[getCorrectAnswer(history.quiz.questions[index].correctAnswer) - 1],
+          selected: history.quiz.questions[index].options[getCorrectAnswer(history.anwsers[index]) - 1],
       }
   });
 

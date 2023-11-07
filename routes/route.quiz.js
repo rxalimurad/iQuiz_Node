@@ -3,14 +3,12 @@ const router = express.Router();
 const controller = require('../controllers/controller.quiz');
 
 
-router.route('/:id')
-.get(controller.fetchQuiz)
-.delete(controller.deleteQuiz)
-
-router.route('/bulkUpload')
-.post(controller.uploadBulkQuizData)
-
 router.route('/')
-.post(controller.uploadQuizData)
+.get(controller.fetchAllQuiz)
+.post(controller.addQuiz)
+.put(controller.updateQuiz)
+
+router.route('/:id')
+.delete(controller.deleteQuiz)
 
 module.exports = router;

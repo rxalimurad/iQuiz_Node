@@ -1,72 +1,58 @@
-const Joi = require('joi');
 const Quiz = require('../models/model.quiz');
 
 
-exports.fetchQuiz = async (req, res, next) => {
-    try {
-        const filter = { categoryId: req.params.id }; 
-        const quiz = await Quiz.find(filter)
-
-        res.status(200).json({count: quiz.length, data: quiz})
-    } catch (err) {
-        res.status(404).json({ error: err })
+exports.fetchAllQuiz = async (req, res, next) => {
+   try {
+    let data = await Quiz.find().populate('questions');
+    if (!data) {
+        return res.status(404).json("Resource not found")
     }
+    console.log(data)
+     res.status(200).json({count: data.length, data: data})
+   } catch(err) {
+    return res.status(404).json("Resource not found " + err)
+   }
 }
 
-
-exports.uploadBulkQuizData = async (req, res, next) => {
-  
-    try {
-        const questionSchema = Joi.object({
-            categoryId: Joi.string().required(),
-            question: Joi.string().required(),
-            options: Joi.array().items(Joi.string()).required(),
-            correctAnswer: Joi.string().valid('A', 'B', 'C', 'D', 'E').required()
-        });
-        const schema = Joi.array().items(questionSchema);
-        
-        const jsonData = JSON.parse(req.files.dataFile.data.toString('utf8'));
-
-        const { error } = schema.validate(jsonData);
-        if (error) {
-            return res.status(401).send("Bad format");
-        }
-
-        const quiz = await Quiz.create(jsonData);
-
-        res.status(201).json({
-            success: true,
-            data: quiz
-        });
-
-
-    } catch (e) {
-        return res.status(401).send("Bad format:" + e);
-    }
-
-}
-
-exports.uploadQuizData = async (req, res, next) => {
-  
+exports.addQuiz = async (req, res, next) => {
     try {
         const quiz = await Quiz.create(req.body);
         res.status(201).json({
           success: true,
           data: quiz,
         });
-
-    } catch (e) {
-        return res.status(401).send("Bad format:" + e);
+    } catch(err) {
+        console.log(err)
+     return res.status(401).json("Bad request"+ err)
     }
-
-}
-
-exports.deleteQuiz = async (req, res, next) => {
+ }
+ 
+ exports.updateQuiz = async (req, res, next) => {
     try {
         
-        const quiz = await Quiz.findByIdAndDelete(req.params.id);
+        const quiz = await Quiz.findByIdAndUpdate(req.body.questionId, req.body, {
+            new: true,
+            runValidators: true
+          });
+          if (!quiz) {
+            return res.status(401).json(req.params.id+" Bad request: "+ err)
+        }
+          res.status(200).json({
+            success: true,
+            data: quiz,
+          });
+    } catch(err) {
+        console.log(err)
+     return res.status(401).json(req.params.id+" Bad request: "+ err)
+    }
+ }
 
-        if (quiz.deletedCount === 0) {
+ exports.deleteQuiz = async (req, res, next) => {
+    try {
+        
+        const category = await Quiz.findByIdAndDelete(req.params.id);
+
+        if (category.deletedCount === 0) {
             return res.status(401).json(req.params.id+" Bad request: ")
         }
 

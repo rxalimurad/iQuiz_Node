@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/controller.history');
-const { route } = require('./route.quiz');
 
 
 router.route('/:id')
@@ -10,5 +9,6 @@ router.route('/:id')
 router.route('/')
 .get(controller.fetchAllHistory)
 .post(controller.addHistory)
+
 
 module.exports = router;
