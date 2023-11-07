@@ -6,9 +6,10 @@ const { route } = require('./route.quiz');
 
 router.route('/:id')
 .post(controller.addHistory)
+.get(controller.fetchDetailHistory)
 
 router.route('/')
-.get(controller.fetchHistory)
+.get(controller.fetchAllHistory)
 
 
 module.exports = router;

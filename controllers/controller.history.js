@@ -34,13 +34,40 @@ exports.addHistory = async (req, res, next) => {
     }
 }
 
-exports.fetchHistory = async (req, res, next) => {
+
+
+
+exports.fetchAllHistory = async (req, res, next) => {
     try {
         let token = req.headers.authorization.split(' ')[1];
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ phone: decoded.phone }).populate('histories')
-        res.status(200).json(user)
+        const user = await User.findOne({ phone: decoded.phone }).populate({
+            path: 'histories',
+            populate: {
+                path: 'category',
+                model: 'Category',
+                populate: {
+                    path: 'quizzes',
+                    model: 'Quiz' 
+                }
+            }
+        });
+        let histories = user.histories;
+        let selectedAnwers = histories.map(history => history.anwsers);
+        let anwsers = histories.map(history => history.category.quizzes.map(quiz => quiz.correctAnswer));
+        let name = histories.map(history => history.category.name);
+        let timestamp = histories.map(history => history.timestamp);
 
+        let zippedArray = selectedAnwers.map((selectedAnswer, index) => {
+            return {
+              id: histories[index]._id,
+              name: name[index],
+              correct: countMatchingElements(selectedAnwers[index], anwsers[index]),
+              totalQuestions: selectedAnswer.length,
+              timestamp: timestamp[index]
+            }
+        });
+        res.status(200).json({results: zippedArray});
         
     } catch(err) {
         if(err.constructor.name === "JsonWebTokenError") {
@@ -49,4 +76,31 @@ exports.fetchHistory = async (req, res, next) => {
             return res.status(404).json("Resource not found " + err)
         }
     }
+    function countMatchingElements(arr1, arr2) {
+        let count = 0;
+        for (let i = 0; i < arr1.length; i++) {
+          if (arr1[i] === arr2[i]) {
+            count++;
+          }
+        }
+        return count;
+      }
+}
+
+exports.fetchDetailHistory = async (req, res, next) => {
+    let quizID = req.params.id;
+    let history = await History.findOne({_id: quizID});
+
+    res.status(200).json({
+        id: history._id,
+        results: [
+            {
+                question: "history.category.quizzes[0].question",
+                isCorrect: "history.category.quizzes[0].correctAnswer === history.anwsers[0]",
+                correct: "history.category.quizzes[0].correctAnswer",
+                selected: "history.anwsers[0]",
+            }
+        ]
+    })
+
 }

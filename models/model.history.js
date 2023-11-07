@@ -10,9 +10,9 @@ const History = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
       },
-        quiz: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Quiz'
+      category: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Category'
         },
       timestamp: {
         type: Date,
