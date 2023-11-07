@@ -3,7 +3,7 @@ const Quiz = require('../models/model.quiz');
 
 exports.fetchAllQuiz = async (req, res, next) => {
    try {
-    let data = await Quiz.find().populate('questions');
+    let data = await Quiz.find();
     if (!data) {
         return res.status(404).json("Resource not found")
     }
@@ -35,7 +35,7 @@ exports.addQuiz = async (req, res, next) => {
             runValidators: true
           });
           if (!quiz) {
-            return res.status(401).json(req.params.id+" Bad request: "+ err)
+            return res.status(401).json("Quiz not found")
         }
           res.status(200).json({
             success: true,

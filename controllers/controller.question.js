@@ -17,7 +17,7 @@ exports.fetchQuestions = async (req, res, next) => {
 exports.uploadBulkQuestionsData = async (req, res, next) => {
     try {
         const questionSchema = Joi.object({
-            categoryId: Joi.string().required(),
+            quizId: Joi.string().required(),
             question: Joi.string().required(),
             options: Joi.array().items(Joi.string()).required(),
             correctAnswer: Joi.string().valid('A', 'B', 'C', 'D', 'E').required()

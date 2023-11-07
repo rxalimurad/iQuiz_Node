@@ -5,14 +5,22 @@ const History = new mongoose.Schema({
       anwsers: {
         type: [String],
         required: [true, 'Please add Answers list'],
+        enum: [
+          'A',
+          'B',
+          'C',
+          'D',
+          'E',
+          'F'
+        ]
       },
       user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
       },
-      category: {
+      quiz: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Category'
+          ref: 'Quiz'
         },
       timestamp: {
         type: Date,

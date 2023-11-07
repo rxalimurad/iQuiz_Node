@@ -27,7 +27,7 @@ const Quiz = new mongoose.Schema(
   Quiz.virtual('questions', {
     ref: 'Question',
     localField: '_id',
-    foreignField: 'questionId',
+    foreignField: 'quizId',
     justOne: false
   });
 
@@ -36,4 +36,4 @@ const Quiz = new mongoose.Schema(
 
   
 
-  module.exports = mongoose.model('Category', Quiz);
+  module.exports = mongoose.model('Quiz', Quiz);

@@ -6,16 +6,16 @@ const jwt = require("jsonwebtoken");
 
 exports.addHistory = async (req, res, next) => {
   try {
-    let categoryId = req.body.questionId;
+    let quizID = req.body.quizID;
     let token = req.headers.authorization.split(" ")[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ phone: decoded.phone });
-    const category = await Quiz.findById(categoryId).populate("questions");
+    const category = await Quiz.findById(quizID).populate("questions");
     let anwsers = req.body.anwsers;
     if (anwsers.length === category.questions.length) {
       let history = await History.create({
         user: user._id,
-        category: question._id,
+        quiz: quizID,
         anwsers: req.body.anwsers,
       });
       res.status(201).json({
@@ -41,10 +41,10 @@ exports.fetchAllHistory = async (req, res, next) => {
     const user = await User.findOne({ phone: decoded.phone }).populate({
       path: "histories",
       populate: {
-        path: "question",
-        model: "Question",
+        path: "quiz",
+        model: "Quiz",
         populate: {
-          path: "question",
+          path: "questions",
           model: "Question",
         },
       },
@@ -52,7 +52,7 @@ exports.fetchAllHistory = async (req, res, next) => {
     let histories = user.histories;
     let selectedAnwers = histories.map((history) => history.anwsers);
     let anwsers = histories.map((history) =>
-      history.category.questions.map((quiz) => quiz.correctAnswer)
+      history.quiz.questions.map((question) => question.correctAnswer)
     );
     let name = histories.map((history) => history.quiz.name);
     let timestamp = histories.map((history) => history.timestamp);
