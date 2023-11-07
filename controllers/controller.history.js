@@ -3,9 +3,13 @@ const History = require("../models/model.history");
 const User = require("../models/model.user");
 const Quiz = require("../models/model.quiz");
 const jwt = require("jsonwebtoken");
+const asyncHandler = require("../middlewares/middleware.async");
+const ErrorResponse = require('../utils/errorResponse'); 
 
-exports.addHistory = async (req, res, next) => {
-  try {
+exports.addHistory = asyncHandler(async(req, res, next) => {
+  if (req.headers.authorization === undefined) {
+    return next(new ErrorResponse(`Unauthorized`, 401))
+}
     let quizID = req.body.quizID;
     let token = req.headers.authorization.split(" ")[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -23,19 +27,15 @@ exports.addHistory = async (req, res, next) => {
         data: history,
       });
     } else {
-      res.status(400).send("Input anwsers not match with questions");
+      return next(new ErrorResponse(`Input anwsers not match with questions`), 401)
     }
-  } catch (err) {
-    if (err.constructor.name === "JsonWebTokenError") {
-      return res.status(401).json("Unauthorized");
-    } else {
-      return res.status(404).json("Resource not found " + err);
-    }
-  }
-};
+  
+});
 
-exports.fetchAllHistory = async (req, res, next) => {
-  try {
+exports.fetchAllHistory = asyncHandler(async(req, res, next) => {
+  if (req.headers.authorization === undefined) {
+    return next(new ErrorResponse(`Unauthorized`, 401))
+}
     let token = req.headers.authorization.split(" ")[1];
     let decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ phone: decoded.phone }).populate({
@@ -52,7 +52,7 @@ exports.fetchAllHistory = async (req, res, next) => {
     let histories = user.histories;
     let selectedAnwers = histories.map((history) => history.anwsers);
     let anwsers = histories.map((history) =>
-      history.quiz.questions.map((question) => question.correctAnswer)
+      history.quiz.questions.map((quiz) => quiz.correctAnswer)
     );
     let name = histories.map((history) => history.quiz.name);
     let timestamp = histories.map((history) => history.timestamp);
@@ -67,13 +67,7 @@ exports.fetchAllHistory = async (req, res, next) => {
       };
     });
     res.status(200).json({ results: zippedArray });
-  } catch (err) {
-    if (err.constructor.name === "JsonWebTokenError") {
-      return res.status(401).json("Unauthorized");
-    } else {
-      return res.status(404).json("Resource not found " + err);
-    }
-  }
+ 
   function countMatchingElements(arr1, arr2) {
     let count = 0;
     for (let i = 0; i < arr1.length; i++) {
@@ -83,9 +77,14 @@ exports.fetchAllHistory = async (req, res, next) => {
     }
     return count;
   }
-};
+});
 
-exports.fetchDetailHistory = async (req, res, next) => {
+exports.fetchDetailHistory = asyncHandler(async (req, res, next) => {
+  if (req.headers.authorization === undefined) {
+    return next(new ErrorResponse(`Unauthorized`, 401))
+}
+  let token = req.headers.authorization.split(" ")[1];
+  let decoded = jwt.verify(token, process.env.JWT_SECRET);
   let quizID = req.params.id;
   let history = await History.findOne({ _id: quizID })
     .populate("user")
@@ -95,8 +94,6 @@ exports.fetchDetailHistory = async (req, res, next) => {
         path: "questions",
       },
     });
-
-
   let zippedArray = history.quiz.questions.map((question, index) => {
       return {
           question: question.question,
@@ -110,7 +107,7 @@ exports.fetchDetailHistory = async (req, res, next) => {
     id: history._id,
     results: zippedArray,
   });
-};
+});
 
 function getCorrectAnswer(character) {
     const charCode = character.charCodeAt(0);

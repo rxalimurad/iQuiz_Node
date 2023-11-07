@@ -4,6 +4,7 @@ const controller = require('../controllers/controller.user');
 
 router.route('/')
 .post(controller.loginUser)
+.put(controller.changeName)
 
 router.route('/getUser')
 .get(controller.getLoginUser)
