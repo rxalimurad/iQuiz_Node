@@ -29,7 +29,9 @@ express.use(errorHandler)
 
 connectDB()
 const PORT = process.env.PORT || 6969;
-
+express.use((req, res) => {
+    res.status(404).send('Not Found');
+  });
 express.listen(PORT, () => {
     console.log('Server Started');
 });
