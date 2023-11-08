@@ -50,34 +50,7 @@ exports.fetchAllHistory = asyncHandler(async (req, res, next) => {
       },
     },
   });
-  let histories = user.histories;
-  let selectedAnwers = histories.map((history) => history.anwsers);
-  let anwsers = histories.map((history) =>
-    history.quiz.questions.map((quiz) => quiz.correctAnswer)
-  );
-  let name = histories.map((history) => history.quiz.name);
-  let timestamp = histories.map((history) => history.timestamp);
-
-  let zippedArray = selectedAnwers.map((selectedAnswer, index) => {
-    return {
-      id: histories[index]._id,
-      name: name[index],
-      correct: countMatchingElements(selectedAnwers[index], anwsers[index]),
-      totalQuestions: selectedAnswer.length,
-      timestamp: timestamp[index],
-    };
-  });
-  res.status(200).json({ results: zippedArray });
-
-  function countMatchingElements(arr1, arr2) {
-    let count = 0;
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] === arr2[i]) {
-        count++;
-      }
-    }
-    return count;
-  }
+  res.status(200).json({histories: user.histories});
 });
 
 exports.fetchDetailHistory = asyncHandler(async (req, res, next) => {
