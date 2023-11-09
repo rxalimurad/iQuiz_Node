@@ -16,15 +16,15 @@ exports.addHistory = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ phone: decoded.phone });
 
   const category = await Quiz.findById(quizID).populate("questions");
-   let anwsers = req.body.anwsers;
+  let anwsers = req.body.anwsers;
   if (anwsers.length === category.questions.length) {
-      let history = await History.create({
-        quiz: quizID,
-        anwsers: anwsers,
-        user: user._id,
-      })
-      res.send(history)
-        
+    let history = await History.create({
+      quiz: quizID,
+      anwsers: anwsers,
+      user: user._id,
+    })
+    res.send(history)
+
   } else {
     return next(
       new ErrorResponse(`Input anwsers not match with questions`),
@@ -40,17 +40,38 @@ exports.fetchAllHistory = asyncHandler(async (req, res, next) => {
   let token = req.headers.authorization.split(" ")[1];
   let decoded = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findOne({ phone: decoded.phone }).populate({
-    path: "histories",
-    populate: {
-      path: "quiz",
-      model: "Quiz",
-      populate: {
-        path: "questions",
-        model: "Question",
+    path: 'histories',
+    populate: [
+      {
+        path: 'quiz',
+        model: 'Quiz'
       },
-    },
+      {
+        path: 'anwsers.question', 
+        model: 'Question'
+      }
+    ],
   });
-  res.status(200).json({histories: user.histories});
+  let histories = user.histories
+
+  let zip = histories.zippedArray = histories.map((history, index) => {
+    let correct = history.anwsers.filter((anwser, index) => {
+      return anwser.selectedOption === anwser.question.correctAnswer
+    })
+    let unanswered = history.anwsers.filter((anwser, index) => {
+      return anwser.selectedOption === 'N/A'
+    })
+    console.log("------- ----" + correct)
+    return {
+      id: history._id,
+      quiz: history.quiz.name,
+      correct: correct.length,
+      unanswered: unanswered.length,
+      total: history.anwsers.length,
+      timestamp: history.timestamp,
+    };
+  })
+  res.status(200).json({ histories: zip });
 });
 
 exports.fetchDetailHistory = asyncHandler(async (req, res, next) => {
@@ -62,31 +83,36 @@ exports.fetchDetailHistory = asyncHandler(async (req, res, next) => {
   let quizID = req.params.id;
   let history = await History.findOne({ _id: quizID })
     .populate("user")
-    .populate({
-      path: "quiz",
-      populate: {
-        path: "questions",
+    .populate([
+      {
+        path: 'quiz',
+        model: 'Quiz'
       },
-    });
-  let zippedArray = history.quiz.questions.map((question, index) => {
+      {
+        path: 'anwsers.question', 
+        model: 'Question'
+      }
+    ]);
+  let zippedArray = history.anwsers.map((anwser, index) => {
     return {
-      question: question.question,
-      isCorrect:
-        history.quiz.questions[index].correctAnswer === history.anwsers[index],
+      question: anwser.question.question,
+      isCorrect: anwser.selectedOption === 'N/A' ? 'N/A' : anwser.selectedOption === anwser.question.correctAnswer ? true : false,
       correct:
-        history.quiz.questions[index].options[
-          getCorrectAnswer(history.quiz.questions[index].correctAnswer) - 1
+      anwser.question.options[
+        getCorrectAnswer(anwser.question.correctAnswer) - 1
         ],
       selected:
-        history.quiz.questions[index].options[
-          getCorrectAnswer(history.anwsers[index]) - 1
+      anwser.question.options[
+        getCorrectAnswer(history.anwsers[index].selectedOption) - 1
         ],
     };
   });
 
+  
+
   res.status(200).json({
     id: history._id,
-    results: zippedArray,
+    details: zippedArray,
   });
 });
 

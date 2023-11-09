@@ -2,21 +2,23 @@ const mongoose = require('mongoose');
 
 const Answer = new mongoose.Schema({
 
-  quiz: {
+    question: {
     type: mongoose.Schema.Types.ObjectId,
-     ref: 'Question'
+    required: [true, 'Question is required'],
+    ref: 'Question'
   },
 
-  selectedOption: {
+   selectedOption: {
     type: String,
-    required: [true, 'Please add Answers list'],
+    required: [true, 'Please add Answers'],
     enum: [
       'A',
       'B',
       'C',
       'D',
       'E',
-      'F'
+      'F',
+      'N/A'
     ]
   },
 }
