@@ -30,7 +30,7 @@ const History = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
          ref: 'Quiz'
       },
-     anwsers: {
+      answers: {
         type: [Answer],
         required: [true, 'Please add Answers list'],
       },
