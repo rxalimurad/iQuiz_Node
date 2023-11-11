@@ -5,7 +5,6 @@ const Question = new mongoose.Schema(
       question: {
         type: String,
         required: [true, 'Please add a question'],
-        unique: true,
         trim: true,
       },
       options: {
