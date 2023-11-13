@@ -2,11 +2,18 @@ const Quiz = require('../models/model.quiz');
 const asyncHandler = require('../middlewares/middleware.async');
 const ErrorResponse = require('../utils/errorResponse'); 
 exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
-    let data = await Quiz.find();
+    let data = await Quiz.find().populate('questions');
     if (!data) {
         return next(new ErrorResponse(`no quiz found`), 404)
     }
-    res.status(200).json({ success: true, count: data.length, data: data })
+    const formattedData = data.map(quiz => ({
+        _id: quiz._id,
+        name: quiz.name,
+        timestamp: quiz.timestamp,
+        totalQuestions: quiz.questions.length,
+        id: quiz.id
+    }));
+    res.status(200).json({ success: true, count: data.length, data: formattedData })
 })
 
 exports.addQuiz = asyncHandler(async (req, res, next) => {
