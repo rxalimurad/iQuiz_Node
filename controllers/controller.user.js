@@ -22,8 +22,9 @@ exports.changeName = asyncHandler(async (req, res, next) => {
     }
     const token = req.headers.authorization.split(' ')[1] || "";
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    let user = await User.updateOne({ phone: decoded.phone }, { name: req.body.name })
-    res.status(200).json({ success: true, details: user, message: "Name Change successful" })
+    let result = await User.updateOne({ phone: decoded.phone }, { name: req.body.name, imageName: req.body.imageName })
+    let user = await User.findOne({ phone: decoded.phone });
+    res.status(200).json({ success: true, user: user, message: "Name Change successful" })
 })
 
 
