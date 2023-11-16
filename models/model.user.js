@@ -6,7 +6,6 @@ const User = new mongoose.Schema(
       name: {
         type: String,
         trim: true,
-        required: [true, 'Please add a name'],
       },
       imageName: {
         type: String,
