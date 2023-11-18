@@ -10,6 +10,7 @@ const User = new mongoose.Schema(
       imageName: {
         type: String,
         trim: true,
+        default: '1.png'
       },
       phone: {
         type: String,
@@ -36,6 +37,7 @@ const User = new mongoose.Schema(
   User.set('toObject', {
     virtuals: true
   });
+
 
   
   User.virtual('histories', {
