@@ -10,7 +10,7 @@ const User = new mongoose.Schema(
       imageName: {
         type: String,
         trim: true,
-        default: '1.png'
+        default: '1'
       },
       phone: {
         type: String,
