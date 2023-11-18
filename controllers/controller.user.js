@@ -1,4 +1,5 @@
 const User = require('../models/model.user');
+const History = require('../models/model.history');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('../middlewares/middleware.async');
 const ErrorResponse = require('../utils/errorResponse'); 
@@ -37,4 +38,16 @@ exports.getLoginUser = asyncHandler(async (req, res, next) => {
     const user = await User.findOne({ phone: decoded.phone });
     res.status(200).json({ success: true, user: user })
 
+})
+
+exports.deleteUser = asyncHandler(async (req, res, next) => {
+    if (req.headers.authorization === undefined) {
+        return next(new ErrorResponse(`Unauthorized`, 401))
+    }
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    let user = await User.findOne({ phone: decoded.phone });
+    let history = await History.deleteMany({ user: user });
+    let result = await User.deleteOne({ phone: decoded.phone });
+    res.status(200).json({ success: true, message: "User deleted successfully" })
 })
