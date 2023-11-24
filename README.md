@@ -1,6 +1,7 @@
 
 # iQuiz
 [![Netlify Status](https://api.netlify.com/api/v1/badges/238fe9aa-9587-4c04-a3aa-01f1c89fbc82/deploy-status)](https://app.netlify.com/sites/taupe-cupcake-ef27a7/deploys)
+
 API for getting/creating/deleting Quizzes and saving its results against a user.
 
 <!--- If we have only one group/collection, then no need for the "ungrouped" heading -->
