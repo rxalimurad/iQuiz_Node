@@ -1,5 +1,6 @@
 const Quiz = require('../models/model.quiz');
 const asyncHandler = require('../middlewares/middleware.async');
+const Question = require('../models/model.question');
 const ErrorResponse = require('../utils/errorResponse'); 
 exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
     let data = await Quiz.find().populate('questions');
