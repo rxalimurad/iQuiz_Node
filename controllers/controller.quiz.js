@@ -39,6 +39,7 @@ exports.updateQuiz = asyncHandler(async (req, res, next) => {
 })
 
 exports.deleteQuiz = asyncHandler(async (req, res, next) => {
+   await Question.deleteMany({ quizId: req.params.id });
     const category = await Quiz.findByIdAndDelete(req.params.id);
     if (category.deletedCount === 0) {
         return next(new ErrorResponse(`no quiz found`), 404)
