@@ -3,6 +3,7 @@ const quizRouter = require('./routes/route.quiz')
 const questionRouter = require('./routes/route.question')
 const userRouter = require('./routes/route.user')
 const historyRouter = require('./routes/route.history')
+const reportRouter = require('./routes/route.report')
 const errorHandler = require('./middlewares/middleware.error')
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
@@ -23,6 +24,7 @@ express.use('/api/v1/quiz', quizRouter);
 express.use('/api/v1/question', questionRouter);
 express.use('/api/v1/user', userRouter);
 express.use('/api/v1/history', historyRouter);
+express.use('/api/v1/report', reportRouter);
 express.use(errorHandler)
 
 

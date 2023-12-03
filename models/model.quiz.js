@@ -30,6 +30,12 @@ const Quiz = new mongoose.Schema(
     foreignField: 'quizId',
     justOne: false
   });
+  Quiz.virtual('history', {
+    ref: 'History',
+    localField: '_id',
+    foreignField: 'quiz',
+    justOne: false
+  });
 
 
 

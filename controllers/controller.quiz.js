@@ -3,13 +3,14 @@ const asyncHandler = require('../middlewares/middleware.async');
 const Question = require('../models/model.question');
 const ErrorResponse = require('../utils/errorResponse'); 
 exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
-    let data = await Quiz.find().populate('questions');
+    let data = await Quiz.find().populate('questions').populate('history');
     if (!data) {
         return next(new ErrorResponse(`no quiz found`), 404)
     }
     const formattedData = data.map(quiz => ({
         _id: quiz._id,
         name: quiz.name,
+        attempted: quiz.history.length === 0 ? null : quiz.history[quiz.history.length - 1].id,
         timestamp: quiz.timestamp,
         totalQuestions: quiz.questions.length,
         id: quiz.id
