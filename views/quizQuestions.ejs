@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Quiz Questions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #questionsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .question-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .question-card h3 {
+      margin-top: 0;
+    }
+
+    .question-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .question-card ul li {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>View Quiz Questions</h1>
+  <div id="questionsContainer">
+    <% if (questions && questions.length > 0) { %>
+      <% questions.forEach((question, index) => { %>
+        <div class="question-card">
+          <h3>Question <%=index + 1%>: <%= question.question %></h3>
+          <ul>
+            <% question.options.forEach((option, index) => { %>
+              <li><%= String.fromCharCode(65 + index) %>. <%= option %></li>
+            <% }); %>
+          </ul>
+          <p>Correct Answer: <%= String.fromCharCode(65 + question.correctAnswer.charCodeAt(0) - 'A'.charCodeAt(0)) %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No questions available for this quiz.</p>
+    <% } %>
+  </div>
+  <div class="add-question-form">
+    <h2>Add New Question</h2>
+    <form id="addQuestionForm" onsubmit="addNewQuestion(event)">
+      <label for="newQuestion">Question:</label>
+      <textarea id="newQuestion" name="newQuestion" required></textarea><br>
+      <label for="options">Options (separated by commas):</label>
+      <input type="text" id="options" name="options" required><br>
+      <label for="correctAnswer">Correct Answer (Enter the option letter):</label>
+      <input type="text" id="correctAnswer" name="correctAnswer" required><br>
+      <button type="submit">Add Question</button>
+    </form>
+  </div>
+
+
+  <script>
+    // Function to add a new question
+    function addNewQuestion(event, quizId) {
+      event.preventDefault();
+      
+      const newQuestion = document.getElementById('newQuestion').value;
+      const options = document.getElementById('options').value.split(',');
+      const correctAnswer = document.getElementById('correctAnswer').value.toUpperCase();
+
+      const requestBody = {
+        "quizId": quizId,
+        "question": newQuestion,
+        "options": options,
+        "correctAnswer": correctAnswer
+      };
+      
+      fetch('http://localhost:10000/api/v1/question/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('New question added successfully.');
+          // Perform actions after successfully adding a question (e.g., update UI)
+        } else {
+          console.error('Failed to add a new question.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error.message);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -97,6 +97,55 @@ exports.fetchAllHistory = asyncHandler(async (req, res, next) => {
   res.status(200).json({ histories: zip });
 });
 
+exports.fetchHistory = asyncHandler(async (req, res, next) => {
+  if (req.headers.authorization === undefined) {
+    return next(new ErrorResponse(`Unauthorized`, 401));
+  }
+  console.log(req.params.id)
+  let token = req.headers.authorization.split(" ")[1];
+  let decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const user = await User.findOne({ phone: decoded.phone }).populate({
+    path: 'histories',
+    populate: [
+      {
+        path: 'quiz',
+        model: 'Quiz'
+      },
+      {
+        path: 'answers.question', 
+        model: 'Question'
+      }
+    ],
+  });
+  let histories = user.histories.filter((history, index) => {
+    return history.id == req.params.id
+  })
+
+  let zip = histories.zippedArray = histories.map((history, index) => {
+    let correct = history.answers.filter((anwser, index) => {
+      console.log("------- ----")
+      console.log(anwser)
+      return anwser.selectedOption === anwser.question.correctAnswer
+    })
+    let unanswered = history.answers.filter((anwser, index) => {
+      return anwser.selectedOption === 'N/A'
+    })
+    console.log("------- ----" + correct)
+    return {
+      id: history._id,
+      quiz: history.quiz.name,
+      correct: correct.length,
+      unanswered: unanswered.length,
+      total: history.answers.length,
+      timestamp: history.timestamp,
+    };
+  })
+  zip = zip.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
+  res.status(200).json({ histories: zip });
+});
+
 exports.fetchDetailHistory = asyncHandler(async (req, res, next) => {
   if (req.headers.authorization === undefined) {
     return next(new ErrorResponse(`Unauthorized`, 401));
