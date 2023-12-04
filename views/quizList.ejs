@@ -85,52 +85,10 @@
     }
 
     function viewQuiz(quizId) {
-        window.location.href = `admin/quizQuestions?quizId=${quizId}`;
-
-    //   if (questionsContainer.innerHTML == '') {
-    //   fetchQuestions(quizId);
-    //   } else {
-    //     questionsContainer.innerHTML = '';
-    //   }
+        window.location.href = `admin/quizQuestions/${quizId}`;
     }
 
-    
-    async function fetchQuestions(quizId) {
-      try {
-        const response = await fetch(`http://localhost:10000/api/v1/question/${quizId}`);
-        const data = await response.json();
-
-        if (response.ok) {
-          displayQuestions(data.data);
-        } else {
-          console.error('Failed to fetch questions:', data.message);
-        }
-      } catch (error) {
-        console.error('Error:', error.message);
-      }
-    }
-
-    function displayQuestions(questions) {
-      const questionsContainer = document.getElementById('questionsContainer');
-      questionsContainer.innerHTML = ''; // Clear previous content
-
-      if (questions && questions.length > 0) {
-        questions.forEach(question => {
-          const questionElement = document.createElement('div');
-          questionElement.classList.add('question-card');
-          questionElement.innerHTML = `
-            <h3>Question: ${question.question}</h3>
-            <ul>
-              ${question.options.map((option, index) => `<li>${String.fromCharCode(65 + index)}. ${option}</li>`).join('')}
-            </ul>
-            <p>Correct Answer: ${String.fromCharCode(65 + question.correctAnswer.charCodeAt(0) - 'A'.charCodeAt(0))}</p>
-          `;
-          questionsContainer.appendChild(questionElement);
-        });
-      } else {
-        questionsContainer.innerHTML = '<p>No questions available for this quiz.</p>';
-      }
-    }
+  
     function deleteQuiz(quizId) {
       // Logic for deleting quiz with the provided quizId
       console.log('Delete Quiz ID:', quizId);

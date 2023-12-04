@@ -16,13 +16,13 @@ router.get('/', asyncHandler(async(req, res, next) => {
         res.status(500).send(`Error fetching data ${error}`);
       }
 }));
-router.get('/quizQuestions', asyncHandler(async(req, res, next) => {
+router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
     try {
         // Fetch data from the API endpoint
-        const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/question/'+req.query.quizId;
+        const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/question/'+req.params.id;
         console.log(currentURL);
         const response = await axios.get(currentURL);
-        res.render('quizQuestions', { title: 'Quiz Questions', questions: response.data.data });
+        res.render('quizQuestions', { title: 'Quiz Questions', questions: response.data.data, quizId: req.query.quizId });
       } catch (error) {
         // Handle errors
         res.status(500).send(`Error fetching data ${error}`);
