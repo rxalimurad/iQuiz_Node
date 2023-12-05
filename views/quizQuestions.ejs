@@ -60,35 +60,33 @@
   </div>
   <div class="add-question-form">
     <h2>Add New Question</h2>
-    <form id="addQuestionForm" onsubmit="addNewQuestion(event, quizId)">
+    <form id="addQuestionForm">
       <label for="newQuestion">Question:</label>
       <textarea id="newQuestion" name="newQuestion" required></textarea><br>
       <label for="options">Options (separated by commas):</label>
-      <input type="text" id="options" name="optionss" required><br>
+      <input type="text" id="options" name="options" required><br>
       <label for="correctAnswer">Correct Answer (Enter the option letter):</label>
       <input type="text" id="correctAnswer" name="correctAnswer" required><br>
-      <button type="submit">Add Question</button>
+      <button type="button" onclick="addNewQuestion('<%= quizId %>')">Add Question</button>
+      
     </form>
   </div>
   
-
   <script>
     // Function to add a new question
-    function addNewQuestion(event, quizId) {
-      console.log(quizId);
-      event.preventDefault();
+    function addNewQuestion(quizId) {
       const newQuestion = document.getElementById('newQuestion').value;
       const options = document.getElementById('options').value.split(',');
       const correctAnswer = document.getElementById('correctAnswer').value.toUpperCase();
-
+  
       const requestBody = {
         "quizId": quizId,
         "question": newQuestion,
         "options": options,
         "correctAnswer": correctAnswer
       };
-      console.log(requestBody); 
-
+      console.log(requestBody);
+  
       fetch('http://localhost:10000/api/v1/question/', {
         method: 'POST',
         headers: {
@@ -98,7 +96,7 @@
       })
       .then(response => {
         if (response.ok) {
-          console.log('New questions added successfully.');
+          console.log('New question added successfully.');
           location.reload();
         } else {
           console.error('Failed to add a new question.');
@@ -110,5 +108,6 @@
       });
     }
   </script>
+  
 </body>
 </html>

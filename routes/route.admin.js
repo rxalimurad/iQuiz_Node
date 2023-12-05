@@ -22,7 +22,11 @@ router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
         const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/question/'+req.params.id;
         console.log(currentURL);
         const response = await axios.get(currentURL);
-        res.render('quizQuestions', { title: 'Quiz Questions', questions: response.data.data, quizId: req.query.quizId });
+        res.render('quizQuestions', { 
+          title: 'Quiz Questions',
+          questions: response.data.data, 
+          quizId: req.params.id
+         });
       } catch (error) {
         // Handle errors
         res.status(500).send(`Error fetching data ${error}`);
