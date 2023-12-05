@@ -1,8 +1,43 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>View Quiz Questions</title>
   <style>
+    /* Add your CSS styling here */
+    #toggleButton {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #toggleButton button {
+      display: flex;
+      align-items: center;
+      background-color: #f0f0f0;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    #arrowIcon {
+      margin-left: 5px;
+      transition: transform 0.3s;
+      /* Add transition for smooth arrow rotation */
+    }
+
+    .hidden-container {
+      display: none;
+    }
+
+    .add-question-form {
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      transition: height 0.5s;
+      /* Add transition for smooth height change */
+      overflow: hidden;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -39,46 +74,87 @@
     }
   </style>
 </head>
+
 <body>
+  <h2>Add New Question</h2>
+
+  <!-- Button to toggle the "Add New Question" form -->
+  <div id="toggleButton">
+    <button onclick="toggleAddQuestionForm()" style="width: 100px; height: 40px; background-color: #000; color: #fff; border: none; border-radius: 5px;">
+      Add New Question <span id="arrowIcon">&#9660;</span>
+    </button>
+  </div>
+
+  <!-- Container for the "Add New Question" form -->
+  <div id="addQuestionContainer" class="hidden-container">
+    <div class="add-question-form">
+      <form id="addQuestionForm" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+        <h3>Add New Question</h3>
+        <label for="newQuestion">Question:</label><br>
+        <textarea id="newQuestion" name="newQuestion" style="height: 50px; width: 100%; margin-bottom: 10px;"
+          required></textarea><br>
+
+        <label for="options">Options (separated by commas):</label><br>
+        <input type="text" id="options" name="options" style="height: 40px; width: 100%; margin-bottom: 10px;"
+          required><br>
+
+        <label for="correctAnswer">Correct Answer (Enter the option letter):</label><br>
+        <input type="text" id="correctAnswer" name="correctAnswer"
+          style="height: 40px; width: 100%; margin-bottom: 10px;" required><br>
+
+        <button type="button" onclick="addNewQuestion('<%= quizId %>')"
+          style="width: 100px; height: 40px; background-color: #000; color: #fff; border: none; border-radius: 5px;">Add
+          Question</button>
+      </form>
+    </div>
+  </div>
+
+
+
   <h1>View Quiz Questions</h1>
+
+
   <div id="questionsContainer">
-    <% if (questions && questions.length > 0) { %>
-      <% questions.forEach((question, index) => { %>
+    <% if (questions && questions.length> 0) { %>
+      <% questions.forEach((question, index)=> { %>
         <div class="question-card">
-          <h3>Question <%=index + 1%>: <%= question.question %></h3>
+          <h3>Question <%=index + 1%>: <%= question.question %>
+          </h3>
           <ul>
-            <% question.options.forEach((option, index) => { %>
-              <li><%= String.fromCharCode(65 + index) %>. <%= option %></li>
-            <% }); %>
+            <% question.options.forEach((option, index)=> { %>
+              <li>
+                <%= String.fromCharCode(65 + index) %>. <%= option %>
+              </li>
+              <% }); %>
           </ul>
-          <p>Correct Answer: <%= String.fromCharCode(65 + question.correctAnswer.charCodeAt(0) - 'A'.charCodeAt(0)) %></p>
+          <p>Correct Answer: <%= String.fromCharCode(65 + question.correctAnswer.charCodeAt(0) - 'A' .charCodeAt(0)) %>
+          </p>
         </div>
-      <% }); %>
-    <% } else { %>
-      <p>No questions available for this quiz.</p>
-    <% } %>
+        <% }); %>
+          <% } else { %>
+            <p>No questions available for this quiz.</p>
+            <% } %>
   </div>
-  <div class="add-question-form">
-    <h2>Add New Question</h2>
-    <form id="addQuestionForm">
-      <label for="newQuestion">Question:</label>
-      <textarea id="newQuestion" name="newQuestion" required></textarea><br>
-      <label for="options">Options (separated by commas):</label>
-      <input type="text" id="options" name="options" required><br>
-      <label for="correctAnswer">Correct Answer (Enter the option letter):</label>
-      <input type="text" id="correctAnswer" name="correctAnswer" required><br>
-      <button type="button" onclick="addNewQuestion('<%= quizId %>')">Add Question</button>
-      
-    </form>
-  </div>
-  
+
+
   <script>
-    // Function to add a new question
+    function toggleAddQuestionForm() {
+      const addQuestionContainer = document.getElementById('addQuestionContainer');
+      const arrowIcon = document.getElementById('arrowIcon');
+
+      if (addQuestionContainer.classList.contains('hidden-container')) {
+        addQuestionContainer.classList.remove('hidden-container');
+        arrowIcon.innerHTML = '&#9650;'; // Change the arrow icon to "up"
+      } else {
+        addQuestionContainer.classList.add('hidden-container');
+        arrowIcon.innerHTML = '&#9660;'; // Change the arrow icon to "down"
+      }
+    }
     function addNewQuestion(quizId) {
       const newQuestion = document.getElementById('newQuestion').value;
       const options = document.getElementById('options').value.split(',');
       const correctAnswer = document.getElementById('correctAnswer').value.toUpperCase();
-  
+
       const requestBody = {
         "quizId": quizId,
         "question": newQuestion,
@@ -86,28 +162,29 @@
         "correctAnswer": correctAnswer
       };
       console.log(requestBody);
-  
-      fetch(serverURL+'/api/v1/question/', {
+
+      fetch(serverURL + '/api/v1/question/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(requestBody)
       })
-      .then(response => {
-        if (response.ok) {
-          console.log('New question added successfully.');
-          location.reload();
-        } else {
-          console.error('Failed to add a new question.');
-          alert('Failed to add a new question.');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error.message);
-      });
+        .then(response => {
+          if (response.ok) {
+            console.log('New question added successfully.');
+            location.reload();
+          } else {
+            console.error('Failed to add a new question.');
+            alert('Failed to add a new question.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error.message);
+        });
     }
   </script>
-  
+
 </body>
+
 </html>
