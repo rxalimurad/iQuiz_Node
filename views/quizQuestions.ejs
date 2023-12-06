@@ -1,266 +1,379 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>View Quiz Questions</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 
-<head>
-  <title>View Quiz Questions</title>
-  <script>hljs.highlightAll();</script>
-  
-  <style>
-  
-    .custom-button {
-      width: 100px;
-      height: 40px;
-      margin-right: 10px;
-      color: #fff;
-      background-color: #000000;
-      border: 1px solid #000000;
+    <script>
+      hljs.highlightAll();
+    </script>
+    <style>
+      .custom-button {
+        width: 100px;
+        height: 40px;
+        margin-right: 10px;
+        color: #fff;
+        background-color: #000000;
+        border: 1px solid #000000;
 
-      border-radius: 10px;
-    }
+        border-radius: 10px;
+      }
 
-    #toggleButton button {
-      display: flex;
-      background-color: #000;
-      align-items: center;
-      width: 100%;
-      height: 41px;
-      color: #fff;
-      justify-content: center;
-      border: none;
-      cursor: pointer;
-    }
+      #toggleButton button {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        background-color: #000;
+        align-items: center;
+        width: 100%;
+        height: 41px;
+        color: #fff;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+      }
 
-    #arrowIcon {
-      margin-left: 5px;
-      transition: transform 0.3s;
-      /* Add transition for smooth arrow rotation */
-    }
+      #arrowIcon {
+        margin-left: 5px;
+        transition: transform 0.3s;
+        /* Add transition for smooth arrow rotation */
+      }
 
-    .hidden-container {
-      display: none;
-    }
+      .hidden-container {
+        display: none;
+      }
 
-    .add-question-form {
-      padding: 10px;
-      border-radius: 5px;
-      transition: height 0.5s;
-      overflow: hidden;
-    }
+      .add-question-form {
+        padding: 10px;
+        border-radius: 5px;
+        transition: height 0.5s;
+        overflow: hidden;
+      }
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
 
-    h1 {
-      text-align: center;
-    }
+      h1 {
+        text-align: center;
+      }
 
-    #questionsContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
+      #questionsContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
 
-    .question-card {
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 5px;
-    }
+      .question-card {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+      }
 
-    .question-card h3 {
-      margin-top: 0;
-    }
+      .question-card h3 {
+        margin-top: 0;
+      }
 
-    .question-card ul {
-      list-style: none;
-      padding: 0;
-    }
+      .question-card ul {
+        list-style: none;
+        padding: 0;
+      }
 
-    .question-card ul li {
-      margin-top: 5px;
-    }
-    .button-row {
-      display: flex;
-      justify-content: flex-start;
-      margin-bottom: 5px;
-    }
-  </style>
-  <style>
-    #dropArea {
-      border: 2px dashed #ccc;
-      border-radius: 5px;
-      text-align: center;
-      align-items: center;
-      padding: 20px;
-      justify-content:flex-end;
-      cursor: pointer;
-      margin-bottom: 0px;
-    }
+      .question-card ul li {
+        margin-top: 5px;
+      }
+      .button-row {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 5px;
+      }
+    </style>
+    <style>
+      #dropArea {
+        border: 2px dashed #0000006c;
+        border-radius: 5px;
+        margin-top: 20px;
+        text-align: center;
+        align-items: center;
+        padding: 20px;
+        justify-content: flex-end;
+        cursor: pointer;
+        margin-bottom: 0px;
+      }
 
-    #dropArea.highlight {
-      border-color: purple;
-    }
-  </style>
-</head>
+      #dropArea.highlight {
+        border-color: #369e1c6c;
+        background-color: #369e1c6c;
+      }
+    </style>
+  </head>
 
-<body>
-  <div id="toggleButton">
-    <button onclick="toggleAddQuestionForm()" >
-      Add New Question <span id="arrowIcon">&#9660;</span>
-    </button>
-  </div>
-
-  <!-- Container for the "Add New Question" form -->
-  <div id="addQuestionContainer" class="hidden-container">
-    <div class="add-question-form">
-      <form id="addQuestionForm" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-        <h3>Add New Question</h3>
-        <label for="newQuestion">Question:</label><br>
-        <textarea id="newQuestion" name="newQuestion" style="height: 50px; width: 100%; margin-bottom: 10px;"
-          required></textarea><br>
-
-        <label for="options">Options (separated by commas):</label><br>
-        <input type="text" id="options" name="options" style="height: 40px; width: 100%; margin-bottom: 10px;"
-          required><br>
-
-        <label for="correctAnswer">Correct Answer (Enter the option letter):</label><br>
-        <input type="text" id="correctAnswer" name="correctAnswer"
-          style="height: 40px; width: 100%; margin-bottom: 10px;" required><br>
-
-        <button type="button" onclick="addNewQuestion('<%= quizId %>', '<%= serverURL %>')"
-          style="width: 100px; height: 40px; background-color: #000; color: #fff; border: none; border-radius: 5px;">Add
-          Question</button>
-      </form>
-      
+  <body>
+    <div id="toggleButton">
+      <button onclick="toggleAddQuestionForm()">
+        Add New Question <span id="arrowIcon">&#9660;</span>
+      </button>
     </div>
-    
-  </div>
 
-  <h2>Upload New Questions File</h2>
+    <!-- Container for the "Add New Question" form -->
+    <div id="addQuestionContainer" class="hidden-container">
+      <div class="add-question-form">
+        <form
+          id="addQuestionForm"
+          style="
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+          "
+        >
+          <h3>Add New Question</h3>
+          <label for="newQuestion">Question:</label><br />
+          <textarea
+            id="newQuestion"
+            name="newQuestion"
+            style="height: 50px; width: 100%; margin-bottom: 10px"
+            required
+          ></textarea
+          ><br />
 
-  <div id="dropArea" 
-  ondragover="handleDragOver(event)" 
-  ondragleave="handleDragLeave(event)" 
-  ondrop="handleDrop(event)">
-    <p>Drag & Drop files here</p>
-    <p>or</p>
-    <input type="file" id="fileInput" name="fileUpload" 
-    style="display: none;" onchange="handleFileSelect(event)" />
-    <label for="fileInput">Click to select files</label>
-  </div>
- 
+          <label for="options">Options (separated by commas):</label><br />
+          <input
+            type="text"
+            id="options"
+            name="options"
+            style="height: 40px; width: 100%; margin-bottom: 10px"
+            required
+          /><br />
 
-  <h1>View Quiz Questions</h1>
+          <label for="correctAnswer"
+            >Correct Answer (Enter the option letter):</label
+          ><br />
+          <input
+            type="text"
+            id="correctAnswer"
+            name="correctAnswer"
+            style="height: 40px; width: 100%; margin-bottom: 10px"
+            required
+          /><br />
 
+          <button
+            type="button"
+            onclick="addNewQuestion('<%= quizId %>', '<%= serverURL %>')"
+            style="
+              width: 100px;
+              height: 40px;
+              background-color: #000;
+              color: #fff;
+              border: none;
+              border-radius: 5px;
+            "
+          >
+            Add Question
+          </button>
+        </form>
+      </div>
+    </div>
+    <br />
+    <div id="toggleButton">
+      <button onclick="toggleAddBulkQuestionForm()">
+        Upload New Questions File <span id="arrowIconb">&#9660;</span>
+      </button>
+    </div>
+    <div
+      id="dropArea"
+      class="hidden-container"
+      ondragover="handleDragOver(event)"
+      ondragleave="handleDragLeave(event)"
+      ondrop="handleDrop(event,'<%= quizId %>','<%= serverURL %>')"
+    >
+      <p>Drag & Drop files here</p>
+      <p>or</p>
+      <input
+        type="file"
+        id="fileInput"
+        name="fileUpload"
+        style="display: none"
+        onchange="handleFileSelect(event,'<%= quizId %>','<%= serverURL %>')"
+      />
+      <label for="fileInput">Click to select files</label>
+    </div>
 
-  <div id="questionsContainer">
-    <% if (questions && questions.length> 0) { %>
-      <% questions.forEach((question, index)=> { %>
-        <div class="question-card">
-          <h3>Question <%=index + 1%>: <%= question.question %>
-          </h3>
-          <ul>
-            <% question.options.forEach((option, index)=> { %>
-              <li>
-                <%= String.fromCharCode(65 + index) %>. <%= option %>
-              </li>
-              <% }); %>
-          </ul>
-          <p>Correct Answer: <%= String.fromCharCode(65 + question.correctAnswer.charCodeAt(0) - 'A' .charCodeAt(0)) %>
-          </p>
-        </div>
-        <% }); %>
-          <% } else { %>
-            <p>No questions available for this quiz.</p>
-            <% } %>
-  </div>
+    <h1>View Quiz Questions</h1>
 
-  <script>
-    function handleDragOver(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      document.getElementById('dropArea').classList.add('highlight');
-    }
+    <div id="questionsContainer">
+      <% if (questions && questions.length> 0) { %> <%
+      questions.forEach((question, index)=> { %>
+      <div class="question-card">
+        <h3>Question <%=index + 1%>: <%= question.question %></h3>
+        <ul>
+          <% question.options.forEach((option, index)=> { %>
+          <li><%= String.fromCharCode(65 + index) %>. <%= option %></li>
+          <% }); %>
+        </ul>
+        <p>
+          Correct Answer: <%= String.fromCharCode(65 +
+          question.correctAnswer.charCodeAt(0) - 'A' .charCodeAt(0)) %>
+        </p>
+      </div>
+      <% }); %> <% } else { %>
+      <p>No questions available for this quiz.</p>
+      <% } %>
+    </div>
 
-    function handleDragLeave(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      document.getElementById('dropArea').classList.remove('highlight');
-    }
-
-    function handleDrop(event) {
-      event.preventDefault();
-      event.stopPropagation();
-      document.getElementById('dropArea').classList.remove('highlight');
-
-      const files = event.dataTransfer.files;
-      handleFiles(files);
-    }
-
-    function handleFileSelect(event) {
-      const files = event.target.files;
-      handleFiles(files);
-    }
-
-    function handleFiles(files) {
-      // You can perform actions with the selected files here
-      console.log(files);
-      // For demonstration purposes, log the selected files to console
-      for (let i = 0; i < files.length; i++) {
-        console.log("File " + (i + 1) + ": " + files[i].name);
+    <script>
+      function handleDragOver(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("File is over the drop area");
+        document.getElementById("dropArea").classList.add("highlight");
       }
-    }
-  </script>
-  <script>
-    function toggleAddQuestionForm() {
-      const addQuestionContainer = document.getElementById('addQuestionContainer');
-      const arrowIcon = document.getElementById('arrowIcon');
 
-      if (addQuestionContainer.classList.contains('hidden-container')) {
-        addQuestionContainer.classList.remove('hidden-container');
-        arrowIcon.innerHTML = '&#9650;'; // Change the arrow icon to "up"
-      } else {
-        addQuestionContainer.classList.add('hidden-container');
-        arrowIcon.innerHTML = '&#9660;'; // Change the arrow icon to "down"
+      function handleDragLeave(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("File is no longer over the drop area");
+        document.getElementById("dropArea").classList.remove("highlight");
       }
-    }
-    function addNewQuestion(quizId,serverURL) {
-      const newQuestion = document.getElementById('newQuestion').value;
-      const options = document.getElementById('options').value.split(',');
-      const correctAnswer = document.getElementById('correctAnswer').value.toUpperCase();
 
-      const requestBody = {
-        "quizId": quizId,
-        "question": newQuestion,
-        "options": options,
-        "correctAnswer": correctAnswer
-      };
-      console.log(requestBody);
+      function handleDrop(event,quizId,serverURL) {
+        event.preventDefault();
+        event.stopPropagation();
+        console.log("File dropped");
+        document.getElementById("dropArea").classList.remove("highlight");
 
-      fetch(serverURL + '/api/v1/question/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      })
-        .then(response => {
-          if (response.ok) {
-            console.log('New question added successfully.');
-            location.reload();
-          } else {
-            console.error('Failed to add a new question.');
-            alert('Failed to add a new question.');
-          }
+        const files = event.dataTransfer.files;
+        handleFiles(files,quizId,serverURL);
+      }
+
+      function handleFileSelect(event,quizId,serverURL) {
+        const files = event.target.files;
+        handleFiles(files,quizId,serverURL);
+      }
+
+      function handleFiles(files,quizId,serverURL) {
+        if (files.length === 0) {
+          console.log("No files selected.");
+          alert("No files selected.");
+        } else if (files.length > 1) {
+          console.log("Multiple files are not allowed.");
+          alert("Multiple files are not allowed.");
+        } else if (files[0].type.toString().includes("json") === false) {
+          console.log("Only json file is allowed.");
+          alert("Only json file is allowed.");
+        } else {
+          const file = files[0];
+          const reader = new FileReader();
+          reader.readAsText(file);
+          reader.onload = function () {
+            const fileContent = reader.result;
+            const requestBody = JSON.parse(fileContent);
+            console.log(requestBody);
+            if (requestBody.length === 0) {
+              console.log("File is empty.");
+              alert("File is empty.");
+              return;
+            } else if (!Array.isArray(requestBody)) {
+              console.log("File is not in the correct format.");
+              alert("File is not in the correct format.");
+              return;
+            }
+            requestBody.forEach((obj) => {
+              obj["quizId"] = quizId;
+            });
+
+            fetch(serverURL + "/api/v1/question", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestBody),
+            })
+              .then((response ) => {
+                if (response.ok) {
+                  console.log("New questions added successfully.");
+                  location.reload();
+                } else {
+                  console.error("Failed to add new questions.");
+                  alert("Failed to add new questions.");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error.message);
+                alert("Error:", error.message);
+              });
+          };
+          reader.onerror = function () {
+            console.error("Error occurred while reading the file.");
+            alert("Error occurred while reading the file.");
+          };
+        }
+      }
+    </script>
+    <script>
+      function toggleAddBulkQuestionForm() {
+        const addQuestionContainer = document.getElementById("dropArea");
+        const arrowIcon = document.getElementById("arrowIconb");
+
+        if (addQuestionContainer.classList.contains("hidden-container")) {
+          addQuestionContainer.classList.remove("hidden-container");
+          arrowIcon.innerHTML = "&#9650;"; // Change the arrow icon to "up"
+        } else {
+          addQuestionContainer.classList.add("hidden-container");
+          arrowIcon.innerHTML = "&#9660;"; // Change the arrow icon to "down"
+        }
+      }
+      function toggleAddQuestionForm() {
+        const addQuestionContainer = document.getElementById(
+          "addQuestionContainer"
+        );
+        const arrowIcon = document.getElementById("arrowIcon");
+
+        if (addQuestionContainer.classList.contains("hidden-container")) {
+          addQuestionContainer.classList.remove("hidden-container");
+          arrowIcon.innerHTML = "&#9650;"; // Change the arrow icon to "up"
+        } else {
+          addQuestionContainer.classList.add("hidden-container");
+          arrowIcon.innerHTML = "&#9660;"; // Change the arrow icon to "down"
+        }
+      }
+      function addNewQuestion(quizId, serverURL) {
+        const newQuestion = document.getElementById("newQuestion").value;
+        const options = document.getElementById("options").value.split(",");
+        const correctAnswer = document
+          .getElementById("correctAnswer")
+          .value.toUpperCase();
+
+        const requestBody = {
+          quizId: quizId,
+          question: newQuestion,
+          options: options,
+          correctAnswer: correctAnswer,
+        };
+        console.log(requestBody);
+
+        fetch(serverURL + "/api/v1/question/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
         })
-        .catch(error => {
-          console.error('Error:', error.message);
-        });
-    }
-  </script>
-
-</body>
-
+          .then((response) => {
+            if (response.ok) {
+              console.log("New question added successfully.");
+              location.reload();
+            } else {
+              console.error("Failed to add a new question.");
+              alert("Failed to add a new question.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error.message);
+          });
+      }
+    </script>
+  </body>
 </html>

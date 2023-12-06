@@ -1,7 +1,6 @@
 [
   {
-    "categoryId": "6548a05938e86ef90256910e",
-    "question": "B is tight45dgffdgfg45?",
+    "question": "New Question in branch",
     "options": [
       "Wrong",
       "Wrong",
@@ -12,8 +11,7 @@
     "correctAnswer": "C"
   },
   {
-    "categoryId": "6548a05938e86ef90256910e",
-    "question": "B is tighteredfdfd6?",
+    "question": "You have tight and sore muscles, what should you do?",
     "options": [
       "Correct",
       "Wrong",
@@ -22,65 +20,6 @@
       "Wrong"
     ],
     "correctAnswer": "A"
-  },
-  {
-    "categoryId": "6548a05938e86ef90256910e",
-    "question": "B is tightdfdf76?",
-    "options": [
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Correct",
-      "Wrong"
-    ],
-    "correctAnswer": "D"
-  },
-  {
-    "categoryId": "6548a05938e86ef90256910e",
-    "question": "B is tight434?",
-    "options": [
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Correct",
-      "Wrong"
-    ],
-    "correctAnswer": "D"
-  },
-  {
-    "categoryId": "6548a05e38e86ef902569110",
-    "question": "B is tight54?",
-    "options": [
-      "Wrong",
-      "Wrong",
-      "Correct",
-      "Wrong",
-      "Wrong"
-    ],
-    "correctAnswer": "C"
-  },
-  {
-    "categoryId": "6548a05e38e86ef902569110",
-    "question": "B is tight236?",
-    "options": [
-      "Correct",
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Wrong"
-    ],
-    "correctAnswer": "A"
-  },
-  {
-    "categoryId": "6548a05e38e86ef902569110",
-    "question": "B is tight457?",
-    "options": [
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Correct"
-    ],
-    "correctAnswer": "E"
   }
+  
 ]
