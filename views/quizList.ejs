@@ -121,8 +121,9 @@
   </style>
   <script>
 
-async function editQuiz(quizId, currentName) {
+async function editQuiz(quizId, currentName,ServerURL) {
     const newName = prompt("Enter the new name:", currentName);
+    console.log('Editing quiz with ID:', ServerURL);
     if (newName !== null) {
       try {
         const response = await fetch(`${ServerURL}/api/v1/quiz/`, {
@@ -152,17 +153,14 @@ async function editQuiz(quizId, currentName) {
     }
 
 
-    function deleteQuiz(quizId) {
-      // Logic for deleting quiz with the provided quizId
-      console.log('Delete Quiz ID:', quizId);
-    }
-
     function addQuestion(quizId) {
       // Logic for adding question to the quiz with the provided quizId
       console.log('Add Question to Quiz ID:', quizId);
     }
 
-    async function deleteQuiz(quizId) {
+    async function deleteQuiz(quizId,serverURL) {
+      console.log('Deleting quiz with ID:', quizId);
+
       if (confirm('Are you sure you want to delete this quiz?')) {
         try {
           const response = await fetch(`${serverURL}/api/v1/quiz/${quizId}`, {
@@ -182,10 +180,9 @@ async function editQuiz(quizId, currentName) {
       }
     }
 
-    async function addNewQuiz(event) {
+    async function addNewQuiz(event,currentURL) {
       event.preventDefault();
       const quizName = document.getElementById('quizName').value;
-      const currentURL = serverURL
 
       try {
         const response = await fetch(currentURL + '/api/v1/quiz/', {
@@ -221,7 +218,7 @@ async function editQuiz(quizId, currentName) {
       <h1>Manage Quizzes</h1>
       <div class="add-quiz-form">
         <h3>Add New Quiz</h3>
-        <form id="addQuizForm" onsubmit="addNewQuiz(event)">
+        <form id="addQuizForm" onsubmit="addNewQuiz(event, '<%= serverURL %>')">
           <label for="quizName">Quiz Name:</label>
           <input type="text" id="quizName" name="quizName" required>
           <button type="submit" class = "custom-button">Add Quiz</button>
@@ -253,10 +250,10 @@ async function editQuiz(quizId, currentName) {
 
                 <div class="button-row">
                   <button class="custom-button" onclick="viewQuiz('<%= quiz.id %>')">View</button>
-                  <button class="custom-button" onclick="editQuiz('<%= quiz.id %>', '<%= quiz.name %>')">Edit Name</button>
+                  <button class="custom-button" onclick="editQuiz('<%= quiz.id %>', '<%= quiz.name %>', '<%= serverURL %>')">Edit Name</button>
                 </div>
                 <div class="button-row">
-                  <button class="custom-button delete-button" onclick="deleteQuiz('<%= quiz.id %>')">Delete</button>
+                  <button class="custom-button delete-button" onclick="deleteQuiz('<%= quiz.id %>', '<%= serverURL %>')">Delete</button>
                 </div>
               </div>
             </div>

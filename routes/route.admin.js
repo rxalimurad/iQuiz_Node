@@ -7,7 +7,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
     try {
         // Fetch data from the API endpoint
         const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/quiz';
-        console.log(currentURL);
+        console.log(req.protocol + '://' + req.get('host'));
         const response = await axios.get(currentURL);
         // Render the EJS view and pass the received data
         res.render('quizList', { title: 'Quiz List', data: response.data.data,
