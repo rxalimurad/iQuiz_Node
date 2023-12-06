@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%=title%>
+    </title>
+
+
+    <style>
+        .quiz-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .quiz-table th,
+        .quiz-table td {
+            border: 1px solid #000;
+            /* Add border for better visibility */
+            padding: 8px;
+            text-align: left;
+        }
+
+        .quiz-table th {
+            background-color: #f2f2f2;
+            /* Add background color for header */
+        }
+
+        /* Define equal-width columns */
+        .quiz-table th,
+        .quiz-table td {
+            width: 25%;
+            /* 4 columns with equal width */
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+            border-right: 1px solid #bbb;
+        }
+
+        li:last-child {
+            border-right: none;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
+
+        .active {
+            background-color: #04AA6D;
+        }
+    </style>
+</head>
+
+<body>
+    <ul
+        style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #333;">
+        <li><a href="/admin" style="float: left;">Home</a></li>
+        <li><a class="active" href="/admin/user" style="float: left;">Users</a></li>
+    </ul>
+    <% function formatTimestamp(timestamp) { const formattedDate=new Date(timestamp); const day=formattedDate.getDate();
+        const month=formattedDate.toLocaleString('default', { month: 'short' }); const year=formattedDate.getFullYear();
+        const hours=formattedDate.getHours(); const minutes=formattedDate.getMinutes(); const amOrPm=hours>= 12 ? 'PM' :
+        'AM';
+        const formattedHours = hours % 12 || 12;
+        const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; return `${day} ${month} ${year}
+            ${formattedHours}:${formattedMinutes} ${amOrPm}`; } %>
+            <h1>All User</h1>
+
+
+            <table class="quiz-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (data && data.length> 0) { %>
+                        <div class="quiz-container">
+                            <% data.forEach(quiz=> { %>
+                                <tr>
+                                    <td>
+                                        <%= quiz.name %>
+                                    </td>
+                                    <td>
+                                        <%= quiz.phone %>
+                                    </td>
+                                    <td>
+                                        <%= quiz.role %>
+                                    </td>
+                                    <td>
+                                        <%= formatTimestamp(quiz.timestamp) %>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </div>
+                        <% } else { %>
+                            <p>No quizzes available.</p>
+                            <% } %>
+
+                </tbody>
+            </table>
+
+
+
+</body>
+
+</html>

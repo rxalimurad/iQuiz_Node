@@ -149,7 +149,7 @@ async function editQuiz(quizId, currentName,ServerURL) {
     }
   }
     function viewQuiz(quizId) {
-      window.location.href = `quizQuestions/${quizId}`;
+      window.location.href = `admin/quizQuestions/${quizId}`;
     }
 
 
@@ -205,9 +205,47 @@ async function editQuiz(quizId, currentName,ServerURL) {
       }
     }
   </script>
+  <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    
+    li {
+      float: left;
+      border-right:1px solid #bbb;
+    }
+    
+    li:last-child {
+      border-right: none;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    
+    .active {
+      background-color: #04AA6D;
+    }
+    </style>
 </head>
 
 <body>
+  <ul style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #333;">
+    <li><a class = "active" href="/admin/user" style="float: left;">Home</a></li>
+    <li><a href="/admin/user" style="float: left;">Users</a></li>
+  </ul>
   <% function formatTimestamp(timestamp) { const formattedDate=new Date(timestamp); const day=formattedDate.getDate();
     const month=formattedDate.toLocaleString('default', { month: 'short' }); const year=formattedDate.getFullYear();
     const hours=formattedDate.getHours(); const minutes=formattedDate.getMinutes(); const amOrPm=hours>= 12 ? 'PM' :

@@ -3,6 +3,16 @@ const History = require('../models/model.history');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('../middlewares/middleware.async');
 const ErrorResponse = require('../utils/errorResponse'); 
+
+
+exports.fetchAllUsers = asyncHandler(async (req, res, next) => {
+    let data = await User.find();
+    if (!data) {
+        return next(new ErrorResponse(`no user found`), 404)
+    }
+    res.status(200).json({ success: true, count: data.length, data: data })
+}
+)
 exports.loginUser = asyncHandler(async (req, res, next) => {
 
     let user = await User.findOne({ phone: req.body.phone });

@@ -62,7 +62,7 @@
 
       #questionsContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
         gap: 20px;
       }
 
@@ -108,9 +108,47 @@
         background-color: #369e1c6c;
       }
     </style>
+     <style>
+      ul {
+        /* list-style-type: none; */
+        /* margin: 0; */
+        /* padding: 0; */
+        /* overflow: hidden; */
+        /* background-color: #333; */
+      }
+      
+      li {
+        /* float: left; */
+        border-right:1px solid #bbb;
+      }
+      
+      li:last-child {
+        border-right: none;
+      }
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover:not(.active) {
+        background-color: #111;
+      }
+      
+      .active {
+        background-color: #04AA6D;
+      }
+      </style>
   </head>
 
   <body>
+    <ul style="list-style-type: none; margin: 0;  padding: 0;  overflow: hidden; background-color: #333;">
+      <li><a href="/admin" style="float: left;">Home</a></li>
+      <li><a href="/admins/user" style="float: left;">Ussers</a></li>
+    </ul>
     <div id="toggleButton">
       <button onclick="toggleAddQuestionForm()">
         Add New Question <span id="arrowIcon">&#9660;</span>
@@ -217,13 +255,39 @@
           Correct Answer: <%= String.fromCharCode(65 +
           question.correctAnswer.charCodeAt(0) - 'A' .charCodeAt(0)) %>
         </p>
+        <div class="button-row">
+          <button class="custom-button delete-button" 
+          onclick="deleteQuestion ('<%= question._id %>','<%= serverURL %>')">Delete</button>
+        </div>
       </div>
+      
       <% }); %> <% } else { %>
       <p>No questions available for this quiz.</p>
       <% } %>
     </div>
 
     <script>
+
+      function deleteQuestion(questionId,serverURL) {
+        console.log(questionId);
+        if (confirm('Are you sure you want to delete this question?')) {
+        fetch(serverURL+"/api/v1/question/"+questionId, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log("Question deleted successfully.");
+              location.reload();
+            } else {
+              console.error("Failed to delete the question.");
+              alert("Failed to delete the question.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error.message);
+          });
+        }
+      }
       function handleDragOver(event) {
         event.preventDefault();
         event.stopPropagation();

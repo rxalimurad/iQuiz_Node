@@ -36,5 +36,22 @@ router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
       }
 }));
 
+router.get('/user', asyncHandler(async(req, res, next) => {
+    try {
+        // Fetch data from the API endpoint
+        const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/user';
+        console.log(currentURL);
+
+        const response = await axios.get(currentURL);
+        // Render the EJS view and pass the received data
+        res.render('userList', { title: 'User List', data: response.data.data,
+        serverURL: req.protocol + '://' + req.get('host')
+      });
+      } catch (error) {
+        // Handle errors
+        res.status(500).send(`Error fetching data ${error}`);
+      }
+}));
+
 
 module.exports = router;
