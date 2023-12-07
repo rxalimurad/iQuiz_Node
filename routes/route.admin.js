@@ -10,7 +10,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
         const response = await axios.get(currentURL);
         // Render the EJS view and pass the received data
         res.render('quizList', { title: 'Quiz List', data: response.data.data,
-        serverURL: "https" + '://' + req.get('host')
+        serverURL: req.protocol + '://' + req.get('host')
       });
       } catch (error) {
         // Handle errors
@@ -26,7 +26,7 @@ router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
           title: 'Quiz Questions',
           questions: response.data.data, 
           quizId: req.params.id,
-          serverURL: "https"  + '://' + req.get('host')
+          serverURL: req.protocol  + '://' + req.get('host')
          });
       } catch (error) {
         // Handle errors
@@ -41,7 +41,7 @@ router.get('/user', asyncHandler(async(req, res, next) => {
         const response = await axios.get(currentURL);
         // Render the EJS view and pass the received data
         res.render('userList', { title: 'User List', data: response.data.data,
-        serverURL: "https" + '://' + req.get('host')
+        serverURL: req.protocol + '://' + req.get('host')
       });
       } catch (error) {
         // Handle errors
