@@ -6,6 +6,7 @@ const router = express.Router();
 router.get('/', asyncHandler(async(req, res, next) => {
     try {
         // Fetch data from the API endpoint
+        const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/quiz';
         const response = await axios.get(currentURL);
         // Render the EJS view and pass the received data
         res.render('quizList', { title: 'Quiz List', data: response.data.data,
@@ -19,8 +20,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
 router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
     try {
         // Fetch data from the API endpoint
-        const currentURL = req.protocol + '://' + req.get('host') + '/api/v1/question/'+req.params.id;
-        console.log(req.protocol + '://' + req.get('host'));
+        const currentURL = req.protocol  + '://' + req.get('host') + '/api/v1/question/'+req.params.id;
         const response = await axios.get(currentURL);
         res.render('quizQuestions', { 
           title: 'Quiz Questions',
@@ -36,7 +36,10 @@ router.get('/quizQuestions/:id', asyncHandler(async(req, res, next) => {
 
 router.get('/user', asyncHandler(async(req, res, next) => {
     try {
+        // Fetch data from the API endpoint
+        const currentURL = req.protocol  + '://' + req.get('host') + '/api/v1/user';
         const response = await axios.get(currentURL);
+        // Render the EJS view and pass the received data
         res.render('userList', { title: 'User List', data: response.data.data,
         serverURL: "https" + '://' + req.get('host')
       });
