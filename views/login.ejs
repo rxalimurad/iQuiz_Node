@@ -139,6 +139,20 @@
 		  passwordInput.addEventListener('input', checkInputs);
 		});
 	 
+    function setCookie(name, value, daysToExpire, path = '/') {
+  let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+  if (daysToExpire) {
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + (daysToExpire * 24 * 60 * 60 * 1000));
+    cookieString += `; expires=${expirationDate.toUTCString()}`;
+  }
+
+  cookieString += `; path=${path}`;
+
+  // Set the cookie
+  document.cookie = cookieString;
+}
     async function login(serverURL) {
       var username = document.querySelector('.Username').value;
       var password = document.querySelector('.Password').value;
@@ -147,7 +161,7 @@
       console.log('Logging in with password:', hashedPassword);
       console.log('Logging in with serverURL:', serverURL);
         try {
-          const response = await fetch(`${serverURL}/admin/loginAdmin`, {
+          const response = await fetch(`${serverURL}/admin/login`, {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
@@ -156,8 +170,12 @@
           });
 
           if (response.ok) {
-            console.log('Logged in successfully.');
-            alert("Logged in successfully.");
+            const data = await response.json();
+            console.log('Login successful'+data.token);
+            setCookie('jwt', response.token, 1); // Set a cookie that expires in 7 days
+            window.location.href = `${serverURL}/admin/home`;
+
+
           } else {
             alert("Wrong username or password");
           }
@@ -166,6 +184,8 @@
         }
    
     }
+
+
    
    </script>
   </head>
