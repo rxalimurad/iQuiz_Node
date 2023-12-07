@@ -14,7 +14,6 @@ exports.fetchAllUsers = asyncHandler(async (req, res, next) => {
 }
 )
 exports.loginUser = asyncHandler(async (req, res, next) => {
-
     let user = await User.findOne({ phone: req.body.phone });
     if (!user) {
         user = await User.create(req.body);

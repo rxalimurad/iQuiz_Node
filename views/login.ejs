@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%=title%></title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"
+    />
+    <style>
+      body,
+      html {
+        height: 100%;
+        background-repeat: no-repeat; /*background-image: linear-gradient(rgb(12, 97, 33),rgb(104, 145, 162));*/
+        background: black;
+        position: relative;
+      }
+    
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px; /* Add margin to create space between the logo and controls */
+      }
+
+      #login-box {
+        min-width: 350px;
+        border: 1px solid black;
+        background: rgba(48, 46, 45, 1);
+        min-height: 250px;
+        padding: 20px;
+        z-index: 9999;
+      }
+
+      #login-box {
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 350px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        border: 1px solid black;
+        background: rgba(255, 255, 255, 0.696);
+        border-radius: 5%;
+        min-height: 250px;
+        padding: 20px;
+        z-index: 9999;
+      }
+      #login-box .logo .logo-caption {
+        font-family: "Poiret One", cursive;
+        color: white;
+
+        text-align: center;
+        margin-bottom: 0px;
+      }
+      #login-box .logo .tweak {
+        color: #000000;
+      }
+      #login-box .controls {
+        padding-top: 30px;
+      }
+      #login-box .controls input {
+        border-radius: 0px;
+        background: rgb(255, 255, 255);
+        border: 0px;
+        color: rgb(4, 4, 4);
+      }
+      #login-box .controls input:focus {
+        box-shadow: none;
+      }
+      #login-box .controls input:first-child {
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+      }
+      #login-box .controls input:last-child {
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+      #login-box button.btn-custom {
+        border-radius: 2px;
+        margin-top: 8px;
+        background: #000000;
+        border-color: rgba(48, 46, 45, 1);
+        color: white;
+      }
+      #login-box button.btn-custom:hover {
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+        background: rgba(48, 46, 45, 1);
+        border-color: #000000;
+      }
+      #particles-js {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: 50% 50%;
+        position: fixed;
+        top: 0px;
+        z-index: 1;
+      }
+    </style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+	<script>
+		// Wait for the document to be fully loaded
+		document.addEventListener('DOMContentLoaded', function() {
+
+			console.log("usernameValue");
+		  const usernameInput = document.querySelector('.Username');
+		  const passwordInput = document.querySelector('.Password');
+		  const loginButton = document.querySelector('.btn-custom');
+		  loginButton.setAttribute('disabled', 'disabled');
+
+		  function checkInputs() {
+			const usernameValue = usernameInput.value.trim();
+			const passwordValue = passwordInput.value.trim();
+	  
+			// Enable or disable the login button based on the input fields
+			if (usernameValue !== '' && passwordValue !== '') {
+			  loginButton.removeAttribute('disabled');
+			} else {
+			  loginButton.setAttribute('disabled', 'disabled');
+			}
+		  }
+	  
+		  // Add event listeners to input fields for input/change events
+		  usernameInput.addEventListener('input', checkInputs);
+		  passwordInput.addEventListener('input', checkInputs);
+		});
+	 
+    async function login(serverURL) {
+      var username = document.querySelector('.Username').value;
+      var password = document.querySelector('.Password').value;
+      var hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
+      console.log('Logging in with username:', username);
+      console.log('Logging in with password:', hashedPassword);
+      console.log('Logging in with serverURL:', serverURL);
+        try {
+          const response = await fetch(`${serverURL}/admin/loginAdmin`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+          },
+            body: JSON.stringify({ username: username, password: hashedPassword })
+          });
+
+          if (response.ok) {
+            console.log('Logged in successfully.');
+            alert("Logged in successfully.");
+          } else {
+            alert("Wrong username or password");
+          }
+        } catch (error) {
+          alert("Wrong username or password");
+        }
+   
+    }
+   
+   </script>
+  </head>
+  <body>
+    <!-- partial:index.partial.html -->
+    <div class="container">
+      <div id="login-box">
+        <div class="logo">
+          <img
+            src="logo.png"
+            alt="Documentation Image"
+            width="200"
+            height="200"
+            style="border-radius: 100px"
+          />
+        </div>
+        <!-- /.logo -->
+        <div class="controls">
+          <input
+            type="text"
+            name="Username"
+            placeholder="Username"
+            class="form-control Username"
+			required
+          />
+          <input
+            type="password"
+            name="Password"
+            placeholder="Password"
+            class="form-control Password"
+            autocomplete="new-password"
+
+			required
+          />
+          <button type="button" class="btn btn-default btn-block btn-custom " onclick="login('<%= serverURL %>')">
+            Login
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="particles-js"></div>
+    <!-- partial -->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

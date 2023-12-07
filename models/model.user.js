@@ -16,7 +16,10 @@ const User = new mongoose.Schema(
         type: String,
         unique: true,
         trim: true,
-        required: [true, 'Please add a phone number'],
+        required: [true, 'Please add a username'],
+      },
+      password: {
+        type: String,
       },
       role: {
         type: String,

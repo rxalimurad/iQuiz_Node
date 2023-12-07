@@ -1,25 +1,23 @@
 [
   {
-    "question": "New Question in branch",
+    "question": "Mazhar k bachy?",
     "options": [
-      "Wrong",
-      "Wrong",
-      "Correct",
-      "Wrong",
-      "Wrong"
+      "1",
+      "2",
+      "3",
+      "4"
     ],
-    "correctAnswer": "C"
+    "correctAnswer": "B"
   },
   {
-    "question": "You have tight and sore muscles, what should you do?",
+    "question": "Mazhar ki waist?",
     "options": [
-      "Correct",
-      "Wrong",
-      "Wrong",
-      "Wrong",
-      "Wrong"
+      "32",
+      "34",
+      "36",
+      "48"
     ],
-    "correctAnswer": "A"
+    "correctAnswer": "D"
   }
   
 ]
