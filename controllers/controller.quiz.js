@@ -5,6 +5,14 @@ const ErrorResponse = require('../utils/errorResponse');
 const jwt = require("jsonwebtoken");
 const User = require('../models/model.user');
 
+function getHistory(quizId,histories) {
+    let history = histories.filter((history) => {
+        return `${history.quiz._id}` === `${quizId.id}`;
+    })
+   
+    return history;
+}
+
 exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
 
     if (req.headers.authorization) {
@@ -12,16 +20,14 @@ exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
         let user = await User.findOne({ phone: decoded.phone }).populate('histories');
         let histories = user.histories;
-        console.log(histories);
         let data = await Quiz.find().populate('questions').populate('history');
         if (!data) {
             return next(new ErrorResponse(`no quiz found`), 404)
         }
-        //quiz.history.length === 0 ? null : quiz.history[quiz.history.length - 1].id,
         const formattedData = data.map(quiz => ({
             _id: quiz._id,
             name: quiz.name,
-            attempted: histories.length !== 0 ? histories[histories.length - 1].id : null,
+            attempted: getHistory(quiz,histories).length !== 0 ? getHistory(quiz,histories)[getHistory(quiz,histories).length - 1].id : null,
             timestamp: quiz.timestamp,
             totalQuestions: quiz.questions.length,
             id: quiz.id

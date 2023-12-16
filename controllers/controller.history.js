@@ -117,10 +117,12 @@ exports.fetchHistory = asyncHandler(async (req, res, next) => {
       }
     ],
   });
+ 
   let histories = user.histories.filter((history, index) => {
     return history.id == req.params.id
   })
 
+  console.log(histories)
   let zip = histories.zippedArray = histories.map((history, index) => {
     let correct = history.answers.filter((anwser, index) => {
       console.log("------- ----")
