@@ -9,6 +9,10 @@ const Quiz = new mongoose.Schema(
         trim: true,
         required: [true, 'Please add a name'],
       },
+      category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+      },
       timestamp: {
         type: Date,
         default: Date.now

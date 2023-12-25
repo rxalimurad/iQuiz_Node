@@ -10,5 +10,6 @@ router.route('/')
 
 router.route('/:id')
 .delete(controller.deleteQuiz)
+.get(controller.fetchAllQuiz)
 
 module.exports = router;

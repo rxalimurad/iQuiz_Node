@@ -14,19 +14,24 @@ function getHistory(quizId,histories) {
 }
 
 exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
-
+    var filter = { category: req.params.id }; 
+    if (req.params.id === undefined) { 
+        filter = {};
+    }
+    console.log(filter)
     if (req.headers.authorization) {
         let token = req.headers.authorization.split(" ")[1];
         let decoded = jwt.verify(token, process.env.JWT_SECRET);
         let user = await User.findOne({ phone: decoded.phone }).populate('histories');
         let histories = user.histories;
-        let data = await Quiz.find().populate('questions').populate('history');
+        let data = await Quiz.find(filter).populate('questions').populate('history');
         if (!data) {
             return next(new ErrorResponse(`no quiz found`), 404)
         }
         const formattedData = data.map(quiz => ({
             _id: quiz._id,
             name: quiz.name,
+            category: quiz.category,
             attempted: getHistory(quiz,histories).length !== 0 ? getHistory(quiz,histories)[getHistory(quiz,histories).length - 1].id : null,
             timestamp: quiz.timestamp,
             totalQuestions: quiz.questions.length,
@@ -36,12 +41,13 @@ exports.fetchAllQuiz = asyncHandler(async (req, res, next) => {
 res.status(200).json({ success: true, count: data.length, data: formattedData })
 
     } else {
-        let data = await Quiz.find().populate('questions').populate('history');
+        let data = await Quiz.find(filter).populate('questions').populate('history');
         if (!data) {
             return next(new ErrorResponse(`no quiz found`), 404)
         }
         const formattedData = data.map(quiz => ({
             _id: quiz._id,
+            category: quiz.category,
             name: quiz.name,
             timestamp: quiz.timestamp,
             totalQuestions: quiz.questions.length,

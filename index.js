@@ -6,6 +6,7 @@ const historyRouter = require('./routes/route.history')
 const reportRouter = require('./routes/route.report')
 const adminRouter = require('./routes/route.admin')
 const errorHandler = require('./middlewares/middleware.error')
+const categoryRouter = require('./routes/route.category')
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
@@ -24,6 +25,7 @@ express.use(bodyParser.json());
 express.use(require('express').static('public'));
 
 express.use('/api/v1/quiz', quizRouter);
+express.use('/api/v1/category', categoryRouter);
 express.use('/api/v1/question', questionRouter);
 express.use('/api/v1/user', userRouter);
 express.use('/api/v1/history', historyRouter);

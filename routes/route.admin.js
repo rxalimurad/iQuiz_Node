@@ -18,6 +18,9 @@ router.route('/home')
 
 router.route('/quizQuestions/:id')
 .get(controller.redirectToQuiz)
+router.route('/categoryQuiz/:id')
+.get(controller.redirectToCategoryQuiz)
+
 
 router.route('/user')
 .get(controller.redirectToAllUser)

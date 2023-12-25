@@ -1,23 +1,102 @@
 [
   {
-    "question": "Mazhar k bachy?",
+    "question": "What is the main ingredient in guacamole?",
     "options": [
-      "1",
-      "2",
-      "3",
-      "4"
+      "Tomato",
+      "Avocado",
+      "Onion",
+      "Lime"
     ],
     "correctAnswer": "B"
   },
   {
-    "question": "Mazhar ki waist?",
+    "question": "Which country is famous for originating pizza?",
     "options": [
-      "32",
-      "34",
-      "36",
-      "48"
+      "Italy",
+      "Spain",
+      "Greece",
+      "France"
     ],
-    "correctAnswer": "D"
+    "correctAnswer": "A"
+  },
+  {
+    "question": "What is the Japanese drink sake made from?",
+    "options": [
+      "Rice",
+      "Wheat",
+      "Barley",
+      "Corn"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "What type of pasta is shaped like small rice grains?",
+    "options": [
+      "Rigatoni",
+      "Orzo",
+      "Farfalle",
+      "Fusilli"
+    ],
+    "correctAnswer": "B"
+  },
+  {
+    "question": "Which spice is made from the stigma of a crocus flower?",
+    "options": [
+      "Saffron",
+      "Cumin",
+      "Paprika",
+      "Turmeric"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "What is the main ingredient in hummus?",
+    "options": [
+      "Chickpeas",
+      "Lentils",
+      "Black Beans",
+      "Kidney Beans"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "Which cheese is traditionally used in a Greek salad?",
+    "options": [
+      "Feta",
+      "Mozzarella",
+      "Cheddar",
+      "Gouda"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "What is the primary ingredient in paella?",
+    "options": [
+      "Rice",
+      "Pasta",
+      "Quinoa",
+      "Barley"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "What type of food is a croissant?",
+    "options": [
+      "Bread",
+      "Cake",
+      "Pastry",
+      "Cookie"
+    ],
+    "correctAnswer": "C"
+  },
+  {
+    "question": "What is the key ingredient in the dish 'Sushi'?",
+    "options": [
+      "Rice",
+      "Noodles",
+      "Quinoa",
+      "Couscous"
+    ],
+    "correctAnswer": "A"
   }
-  
 ]

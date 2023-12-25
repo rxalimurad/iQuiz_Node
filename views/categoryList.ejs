@@ -169,13 +169,13 @@ async function editQuiz(quizId, currentName,ServerURL) {
     console.log('Editing quiz with ID:', ServerURL);
     if (newName !== null) {
       try {
-        const response = await fetch(`${ServerURL}/api/v1/quiz/`, {
+        const response = await fetch(`${ServerURL}/api/v1/category/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            quizId: quizId,
+            categoryId: quizId,
             name: newName
           })
         });
@@ -192,7 +192,7 @@ async function editQuiz(quizId, currentName,ServerURL) {
     }
   }
     function viewQuiz(quizId) {
-      window.location.href = `/admin/quizQuestions/${quizId}`;
+      window.location.href = `/admin/categoryQuiz/${quizId}`;
     }
 
 
@@ -206,7 +206,7 @@ async function editQuiz(quizId, currentName,ServerURL) {
 
       if (confirm('Are you sure you want to delete this quiz?')) {
         try {
-          const response = await fetch(`${serverURL}/api/v1/quiz/${quizId}`, {
+          const response = await fetch(`${serverURL}/api/v1/category/${quizId}`, {
             method: 'DELETE'
           });
 
@@ -223,17 +223,17 @@ async function editQuiz(quizId, currentName,ServerURL) {
       }
     }
 
-    async function addNewQuiz(event,currentURL,catId) {
+    async function addNewQuiz(event,currentURL) {
       event.preventDefault();
       const quizName = document.getElementById('quizName').value;
 
       try {
-        const response = await fetch(currentURL + '/api/v1/quiz/', {
+        const response = await fetch(currentURL + '/api/v1/category/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ name: quizName, category: catId })
+          body: JSON.stringify({ name: quizName })
         });
 
         if (response.ok) {
@@ -250,7 +250,7 @@ async function editQuiz(quizId, currentName,ServerURL) {
 
 
   </script>
-  <style>
+<style>
     ul {
       list-style-type: none;
       margin: 0;
@@ -283,7 +283,7 @@ async function editQuiz(quizId, currentName,ServerURL) {
     .active {
       background-color: #04AA6D;
     }
-    </style>
+</style>
 </head>
 
 
@@ -304,11 +304,11 @@ async function editQuiz(quizId, currentName,ServerURL) {
       ${formattedHours}:${formattedMinutes} ${amOrPm}`; } %>
       <h1>Manage Quizzes</h1>
       <div class="add-quiz-form">
-        <h3>Add New Quiz</h3>
-        <form id="addQuizForm" onsubmit="addNewQuiz(event, '<%= serverURL %>', '<%= catId %>')">
-          <label for="quizName">Quiz Name:</label>
+        <h3>Add New Category</h3>
+        <form id="addQuizForm" onsubmit="addNewQuiz(event, '<%= serverURL %>')">
+          <label for="quizName">Category Name:</label>
           <input type="text" id="quizName" name="quizName" required>
-          <button type="submit" class = "custom-button">Add Quiz</button>
+          <button type="submit" class = "custom-button">Add Category</button>
         </form>
       </div>
 
@@ -322,9 +322,9 @@ async function editQuiz(quizId, currentName,ServerURL) {
 
 
               <tr>
-                <td class="left-column">Total Questions:</td>
+                <td class="left-column">Total Quizzes:</td>
                 <td class="right-column">
-                  <%= quiz.totalQuestions %>
+                  <%= quiz.quizzes.length %>
                 </td>
               </tr><br>
               <tr>

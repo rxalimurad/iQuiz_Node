@@ -69,16 +69,35 @@ exports.redirectToLogin = asyncHandler(async (req, res, next) => {
     res.status(500).send(`Error fetching data ${error}`);
   }
 })
-
+exports.redirectToCategoryQuiz  = asyncHandler(async (req, res, next) => {
+  try {
+    // Fetch data from the API endpoint
+    const currentURL =
+      req.protocol + "://" + req.get("host") + "/api/v1/quiz/" + req.params.id;
+    const response = await axios.get(currentURL);
+    console.log(response.data.data);  
+    // Render the EJS view and pass the received data
+    res.render("quizList", {
+      title: "Quiz List",
+      catId: req.params.id,
+      data: response.data.data,
+      serverURL: req.protocol + "://" + req.get("host"),
+    });
+  } catch (error) {
+    // Handle errors
+    res.status(500).send(`Error fetching data ${error}`);
+  }
+})
 exports.redirectToHome = asyncHandler(async (req, res, next) => {
   try {
     // Fetch data from the API endpoint
     const currentURL =
-      req.protocol + "://" + req.get("host") + "/api/v1/quiz";
+      req.protocol + "://" + req.get("host") + "/api/v1/category";
     const response = await axios.get(currentURL);
+    console.log(response.data.data);  
     // Render the EJS view and pass the received data
-    res.render("quizList", {
-      title: "Quiz List",
+    res.render("categoryList", {
+      title: "categories List",
       data: response.data.data,
       serverURL: req.protocol + "://" + req.get("host"),
     });
