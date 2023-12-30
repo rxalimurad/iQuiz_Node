@@ -10,8 +10,17 @@ exports.fetchAllCategory = asyncHandler(async (req, res, next) => {
         if (!data) {
             return next(new ErrorResponse(`no category found`), 404)
         }
-        
-        res.status(200).json({ success: true, count: data.length, data: data })
+        data = data.map((category) => {
+            return {
+                _id: category._id,
+                name: category.name,
+                count: category.quizzes.length,
+                quizzes: category.quizzes,
+                createdAt: category.createdAt,
+                updatedAt: category.updatedAt,
+            }
+        })
+        res.status(200).json({ success: true, count: data.length, data: data})
    
 })
 
