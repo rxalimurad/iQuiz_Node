@@ -12,10 +12,11 @@ exports.fetchAllCategory = asyncHandler(async (req, res, next) => {
         }
         data = data.map((category) => {
             return {
-                _id: category._id,
+                id: category._id,
                 name: category.name,
                 count: category.quizzes.length,
                 quizzes: category.quizzes,
+                timestamp: category.timestamp,
                 createdAt: category.createdAt,
                 updatedAt: category.updatedAt,
             }
