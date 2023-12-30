@@ -6,16 +6,30 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.fetchAllCategory = asyncHandler(async (req, res, next) => {
 
   
-        let data = await Category.find().populate('quizzes');
+    let data = await Category.find().populate({
+        path: 'quizzes',
+        populate: { path: 'questions' }
+    });
         if (!data) {
             return next(new ErrorResponse(`no category found`), 404)
         }
         data = data.map((category) => {
+            let quizzesWithTotalQuestions = category.quizzes.map((quiz) => {
+                const questionIds = quiz.questions;
+                const totalQuestions = questionIds.length;
+            
+                return {
+                    ...quiz._doc,
+                    totalQuestions
+                };
+            });
+            
+            console.log(quizzesWithTotalQuestions);
             return {
                 id: category._id,
                 name: category.name,
                 count: category.quizzes.length,
-                quizzes: category.quizzes,
+                quizzes: quizzesWithTotalQuestions,
                 timestamp: category.timestamp,
                 createdAt: category.createdAt,
                 updatedAt: category.updatedAt,
