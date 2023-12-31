@@ -164,7 +164,9 @@
       }
       return null;
     }
-async function editQuiz(quizId, currentName,ServerURL) {
+
+
+    async function editQuiz(quizId, currentName,ServerURL) {
     const newName = prompt("Enter the new name:", currentName);
     console.log('Editing quiz with ID:', ServerURL);
     if (newName !== null) {
@@ -251,6 +253,12 @@ async function editQuiz(quizId, currentName,ServerURL) {
 
   </script>
 <style>
+   body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
     ul {
       list-style-type: none;
       margin: 0;
@@ -261,11 +269,12 @@ async function editQuiz(quizId, currentName,ServerURL) {
     
     li {
       float: left;
-      border-right:1px solid #bbb;
+      border-right: 1px solid #bbb;
     }
     
     li:last-child {
       border-right: none;
+      float: right;
     }
     
     li a {
@@ -283,15 +292,17 @@ async function editQuiz(quizId, currentName,ServerURL) {
     .active {
       background-color: #04AA6D;
     }
+
 </style>
 </head>
 
 
 <body id="body" style="display: none;">
-  <ul style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #333;">
-    <li><a class = "active" href="/admin/user" style="float: left;">Home</a></li>
-    <li><a href="/admin/user" style="float: left;">Users</a></li>
-    <li><a href="/admin" id="logoutLink" style="float: right;">Logout</a></li>
+  <ul>
+    <li><a class="active" href="/admin/home">Home</a></li>
+    <li><a href="/admin/user">Users</a></li>
+    <li><a href="/admin/changePassword">Change Password</a></li>
+    <li><a href="/admin" id="logoutLink">Logout</a></li>
   </ul>
 
   </ul>

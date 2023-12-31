@@ -32,48 +32,94 @@
             width: 25%;
             /* 4 columns with equal width */
         }
+        body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+    
+    li {
+      float: left;
+      border-right: 1px solid #bbb;
+    }
+    
+    li:last-child {
+      border-right: none;
+      float: right;
+    }
+    
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+    
+    li a:hover:not(.active) {
+      background-color: #111;
+    }
+    
+    .active {
+      background-color: #04AA6D;
+    }
 
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
-
-        li {
-            float: left;
-            border-right: 1px solid #bbb;
-        }
-
-        li:last-child {
-            border-right: none;
-        }
-
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
-
-        li a:hover:not(.active) {
-            background-color: #111;
-        }
-
-        .active {
-            background-color: #04AA6D;
-        }
     </style>
+     <script>
+        window.addEventListener('DOMContentLoaded', checkJWTTokenCookie);
+      function checkJWTTokenCookie() {
+        const logoutLink = document.getElementById('logoutLink');
+        const newLogoutLink = logoutLink.cloneNode(true);
+        logoutLink.parentNode.replaceChild(newLogoutLink, logoutLink);
+        document.getElementById('logoutLink').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (confirm('Are you sure you want to logout?')){
+          document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          window.location.href = this.getAttribute('href'); // Redirect to /admin/user
+        }
+        });
+        const jwtToken = getCookie('jwt'); 
+        if (!jwtToken) {
+            window.location.href = '/admin'; // Replace '/login' with the URL you want to redirect to
+         } else {
+          const body = document.getElementById('body');
+    
+          body.style.display = '';
+        }
+      }
+    
+       function getCookie(name) {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+              return cookie.substring(name.length + 1);
+            }
+          }
+          return null;
+        }
+    
+    
+        </script>
 </head>
 
 <body>
-    <ul
-        style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #333;">
-        <li><a href="/admin" style="float: left;">Home</a></li>
-        <li><a class="active" href="/admin/user" style="float: left;">Users</a></li>
-    </ul>
+    
+    <ul>
+        <li><a  href="/admin/home">Home</a></li>
+        <li><a class="active" href="/admin/user">Users</a></li>
+        <li><a  href="/admin/changePassword">Change Password</a></li>
+        <li><a href="/admin" id="logoutLink">Logout</a></li>
+      </ul>
+
     <% function formatTimestamp(timestamp) { const formattedDate=new Date(timestamp); const day=formattedDate.getDate();
         const month=formattedDate.toLocaleString('default', { month: 'short' }); const year=formattedDate.getFullYear();
         const hours=formattedDate.getHours(); const minutes=formattedDate.getMinutes(); const amOrPm=hours>= 12 ? 'PM' :

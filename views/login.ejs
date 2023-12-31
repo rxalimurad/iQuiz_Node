@@ -172,7 +172,7 @@
           if (response.ok) {
             const data = await response.json();
             console.log('Login successful'+data.token);
-            setCookie('jwt', response.token, 1); // Set a cookie that expires in 7 days
+            setCookie('jwt', response.token, 1); // Set a cookie that expires in 1 days
             window.location.href = `${serverURL}/admin/home`;
 
 

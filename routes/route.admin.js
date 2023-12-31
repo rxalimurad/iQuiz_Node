@@ -9,7 +9,9 @@ router.route('/create')
 
 router.route('/login')
 .post(controller.loginAdmin)
-
+router.route('/changePassword')
+.put(controller.changePassword)
+.get(controller.redirectToChangePassword)
 router.route('/')
 .get(controller.redirectToLogin)
 

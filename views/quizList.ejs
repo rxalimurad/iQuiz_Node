@@ -132,7 +132,7 @@
 }
   </style>
   <script>
-  window.addEventListener('DOMContentLoaded', checkJWTTokenCookie);
+    window.addEventListener('DOMContentLoaded', checkJWTTokenCookie);
   function checkJWTTokenCookie() {
     const logoutLink = document.getElementById('logoutLink');
     const newLogoutLink = logoutLink.cloneNode(true);
@@ -144,6 +144,33 @@
       window.location.href = this.getAttribute('href'); // Redirect to /admin/user
     }
     });
+    const jwtToken = getCookie('jwt'); 
+    if (!jwtToken) {
+        window.location.href = '/admin'; // Replace '/login' with the URL you want to redirect to
+     } else {
+      const body = document.getElementById('body');
+
+      body.style.display = '';
+    }
+  }
+
+   function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+          return cookie.substring(name.length + 1);
+        }
+      }
+      return null;
+    }
+
+
+    </script>
+  <script>
+  window.addEventListener('DOMContentLoaded', checkJWTTokenCookie);
+  function checkJWTTokenCookie() {
+   
     const jwtToken = getCookie('jwt'); 
     if (!jwtToken) {
         window.location.href = '/admin'; // Replace '/login' with the URL you want to redirect to
@@ -283,18 +310,12 @@ async function editQuiz(quizId, currentName,ServerURL) {
     .active {
       background-color: #04AA6D;
     }
+    
     </style>
 </head>
 
 
-<body id="body" style="display: none;">
-  <ul style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #333;">
-    <li><a class = "active" href="/admin/user" style="float: left;">Home</a></li>
-    <li><a href="/admin/user" style="float: left;">Users</a></li>
-    <li><a href="/admin" id="logoutLink" style="float: right;">Logout</a></li>
-  </ul>
-
-  </ul>
+<body id="body">
   <% function formatTimestamp(timestamp) { const formattedDate=new Date(timestamp); const day=formattedDate.getDate();
     const month=formattedDate.toLocaleString('default', { month: 'short' }); const year=formattedDate.getFullYear();
     const hours=formattedDate.getHours(); const minutes=formattedDate.getMinutes(); const amOrPm=hours>= 12 ? 'PM' :
@@ -302,6 +323,11 @@ async function editQuiz(quizId, currentName,ServerURL) {
     const formattedHours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; return `${day} ${month} ${year}
       ${formattedHours}:${formattedMinutes} ${amOrPm}`; } %>
+  <ul style="list-style-type: none; margin: 0; margin-bottom: 10px ;padding: 0;  overflow: hidden; background-color: #00000000;">
+    <li><a class = "active" href="/admin/home" style="float: left;"> &lt; Back to Home</a></li>
+  </ul>
+
+ 
       <h1>Manage Quizzes</h1>
       <div class="add-quiz-form">
         <h3>Add New Quiz</h3>

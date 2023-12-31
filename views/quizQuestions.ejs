@@ -7,6 +7,34 @@
     <script>
       hljs.highlightAll();
     </script>
+    <script>
+      window.addEventListener('DOMContentLoaded', checkJWTTokenCookie);
+    function checkJWTTokenCookie() {
+      event.preventDefault();
+      
+      const jwtToken = getCookie('jwt'); 
+      if (!jwtToken) {
+          window.location.href = '/admin'; // Replace '/login' with the URL you want to redirect to
+       } else {
+        const body = document.getElementById('body');
+  
+        body.style.display = '';
+      }
+    }
+  
+     function getCookie(name) {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      }
+  
+  
+      </script>
     <style>
       .custom-button {
         width: 100px;
@@ -142,13 +170,40 @@
         background-color: #04AA6D;
       }
       </style>
+       <script>
+        function goBack() {
+          window.history.back();
+        }
+      </script>
+       <style>
+        /* Your existing CSS styles */
+        button {
+          background-color: #4CAF50; /* Green background color */
+          color: white;
+          padding: 10px 20px; /* Adjust padding as needed */
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 16px;
+        }
+    
+        button:hover {
+          background-color: #45a049; /* Darker green on hover */
+        }
+      </style>
   </head>
 
   <body>
-    <ul style="list-style-type: none; margin: 0;  padding: 0;  overflow: hidden; background-color: #333;">
-      <li><a href="/admin" style="float: left;">Home</a></li>
-      <li><a href="/admin/user" style="float: left;">Users</a></li>
-    </ul>
+    <% function formatTimestamp(timestamp) { const formattedDate=new Date(timestamp); const day=formattedDate.getDate();
+      const month=formattedDate.toLocaleString('default', { month: 'short' }); const year=formattedDate.getFullYear();
+      const hours=formattedDate.getHours(); const minutes=formattedDate.getMinutes(); const amOrPm=hours>= 12 ? 'PM' :
+      'AM';
+      const formattedHours = hours % 12 || 12;
+      const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; return `${day} ${month} ${year}
+        ${formattedHours}:${formattedMinutes} ${amOrPm}`; } %>
+        <button onclick="goBack()">
+          <span>&#8592;</span> Back
+        </button>
     <div id="toggleButton">
       <button onclick="toggleAddQuestionForm()">
         Add New Question <span id="arrowIcon">&#9660;</span>
@@ -220,6 +275,8 @@
         Upload New Questions File <span id="arrowIconb">&#9660;</span>
       </button>
     </div>
+    <br />
+  
     <div
       id="dropArea"
       class="hidden-container"
@@ -316,7 +373,48 @@
         const files = event.target.files;
         handleFiles(files,quizId,serverURL);
       }
+      function handleJson(quizId, serverURL) {
+        const fileContent = document.getElementById("lpc").value;
+        const requestBody = JSON.parse(fileContent);
+            if (requestBody.length === 0) {
+              console.log("File is empty.");
+              alert("File is empty.");
+              return;
+            } else if (!Array.isArray(requestBody)) {
+              console.log("File is not in the correct format.");
+              alert("File is not in the correct format.");
+              return;
+            }
+            requestBody.forEach((obj) => {
+              obj["quizId"] = quizId;
+            });
 
+            fetch(serverURL + "/api/v1/question", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(requestBody),
+            })
+              .then((response ) => {
+                if (response.ok) {
+                  console.log("New questions added successfully.");
+                  location.reload();
+                } else {
+                  console.error("Failed to add new questions.");
+                  alert("Failed to add new questions.");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error.message);
+                alert("Error:", error.message);
+              });
+    
+         
+   
+      }
+
+   
       function handleFiles(files,quizId,serverURL) {
         if (files.length === 0) {
           console.log("No files selected.");
@@ -380,6 +478,18 @@
       function toggleAddBulkQuestionForm() {
         const addQuestionContainer = document.getElementById("dropArea");
         const arrowIcon = document.getElementById("arrowIconb");
+
+        if (addQuestionContainer.classList.contains("hidden-container")) {
+          addQuestionContainer.classList.remove("hidden-container");
+          arrowIcon.innerHTML = "&#9650;"; // Change the arrow icon to "up"
+        } else {
+          addQuestionContainer.classList.add("hidden-container");
+          arrowIcon.innerHTML = "&#9660;"; // Change the arrow icon to "down"
+        }
+      }
+      function toggleAddJson() {
+        const addQuestionContainer = document.getElementById("dropArea");
+        const arrowIcon = document.getElementById("arrowIconbbn");
 
         if (addQuestionContainer.classList.contains("hidden-container")) {
           addQuestionContainer.classList.remove("hidden-container");

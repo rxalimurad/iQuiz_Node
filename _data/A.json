@@ -1,101 +1,101 @@
 [
   {
-    "question": "What is the main ingredient in guacamole?",
+    "question": "What does UNESCO stand for in the context of World Heritage Sites?",
     "options": [
-      "Tomato",
-      "Avocado",
-      "Onion",
-      "Lime"
-    ],
-    "correctAnswer": "B"
-  },
-  {
-    "question": "Which country is famous for originating pizza?",
-    "options": [
-      "Italy",
-      "Spain",
-      "Greece",
-      "France"
+      "United Nations Educational, Scientific and Cultural Organization",
+      "United Nations Environment and Sustainability Council",
+      "United Nations Economic and Social Cooperation",
+      "United Nations Expedition and Survey Coordination"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "What is the Japanese drink sake made from?",
+    "question": "Which city is known as the 'City of Lights'?",
     "options": [
-      "Rice",
-      "Wheat",
-      "Barley",
-      "Corn"
+      "Paris",
+      "Las Vegas",
+      "Rome",
+      "Barcelona"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "What type of pasta is shaped like small rice grains?",
+    "question": "Identify the famous landmark in Rio de Janeiro, Brazil, known for its massive statue of Jesus.",
     "options": [
-      "Rigatoni",
-      "Orzo",
-      "Farfalle",
-      "Fusilli"
-    ],
-    "correctAnswer": "B"
-  },
-  {
-    "question": "Which spice is made from the stigma of a crocus flower?",
-    "options": [
-      "Saffron",
-      "Cumin",
-      "Paprika",
-      "Turmeric"
+      "Christ the Redeemer",
+      "Sugarloaf Mountain",
+      "Ipanema Beach",
+      "Copacabana Beach"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "What is the main ingredient in hummus?",
+    "question": "What is the largest religious structure in the world, located in Cambodia?",
     "options": [
-      "Chickpeas",
-      "Lentils",
-      "Black Beans",
-      "Kidney Beans"
+      "Angkor Wat",
+      "Taj Mahal",
+      "Petra",
+      "Great Wall of China"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "Which cheese is traditionally used in a Greek salad?",
+    "question": "Which natural wonder is situated between the borders of Zambia and Zimbabwe in Africa?",
     "options": [
-      "Feta",
-      "Mozzarella",
-      "Cheddar",
-      "Gouda"
+      "Victoria Falls",
+      "Niagara Falls",
+      "Iguazu Falls",
+      "Angel Falls"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "What is the primary ingredient in paella?",
+    "question": "Identify the highest mountain in the world.",
     "options": [
-      "Rice",
-      "Pasta",
-      "Quinoa",
-      "Barley"
+      "Mount Everest",
+      "K2",
+      "Kangchenjunga",
+      "Lhotse"
     ],
     "correctAnswer": "A"
   },
   {
-    "question": "What type of food is a croissant?",
+    "question": "Which country is known as the 'Land of the Rising Sun'?",
     "options": [
-      "Bread",
-      "Cake",
-      "Pastry",
-      "Cookie"
+      "Japan",
+      "China",
+      "South Korea",
+      "Vietnam"
     ],
-    "correctAnswer": "C"
+    "correctAnswer": "A"
   },
   {
-    "question": "What is the key ingredient in the dish 'Sushi'?",
+    "question": "What is the famous canal that connects the Atlantic Ocean to the Pacific Ocean?",
     "options": [
-      "Rice",
-      "Noodles",
-      "Quinoa",
-      "Couscous"
+      "Panama Canal",
+      "Suez Canal",
+      "Kiel Canal",
+      "Erie Canal"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "Identify the largest hot desert in the world.",
+    "options": [
+      "Sahara Desert",
+      "Arabian Desert",
+      "Gobi Desert",
+      "Kalahari Desert"
+    ],
+    "correctAnswer": "A"
+  },
+  {
+    "question": "Which European city is famous for its historic canals and gondolas?",
+    "options": [
+      "Venice",
+      "Amsterdam",
+      "Barcelona",
+      "Florence"
     ],
     "correctAnswer": "A"
   }
